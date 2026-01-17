@@ -1,21 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Scissors } from "lucide-react";
+import { Menu, Scissors, Home, ClipboardList, User, PlusCircle } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useEffect(() => {
+    const status = localStorage.getItem("darzi_logged_in") === "true";
+    setIsLoggedIn(status);
+  }, [location]);
 
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
     const isActive = location === href;
@@ -29,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background font-sans">
+    <div className="min-h-screen flex flex-col bg-background font-sans pb-20 md:pb-0">
       <header className="fixed top-0 z-50 w-full transition-all duration-300">
         <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
           <Link href="/">
@@ -46,11 +43,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/about">About</NavLink>
-            <Link href="/login">
-              <Button variant="outline" className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary">
-                Login
-              </Button>
-            </Link>
+            
+            {!isLoggedIn ? (
+              <Link href="/login">
+                <Button variant="outline" className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary">
+                  Login
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/dashboard">
+                <Button variant="ghost" className="ml-4 h-10 w-10 rounded-full p-0 overflow-hidden border border-primary/20">
+                  <div className="bg-primary/10 w-full h-full flex items-center justify-center text-primary font-bold">A</div>
+                </Button>
+              </Link>
+            )}
+
             <Link href="/booking">
               <Button className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                 Book Service
@@ -58,33 +65,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
 
-          {/* Mobile Nav */}
-          <Sheet>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="bg-background/50 backdrop-blur-sm">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <div className="flex flex-col gap-6 mt-10">
-                <Link href="/">
-                  <a className="text-lg font-medium">Home</a>
-                </Link>
-                <Link href="/services">
-                  <a className="text-lg font-medium">Services</a>
-                </Link>
-                <Link href="/about">
-                  <a className="text-lg font-medium">About</a>
-                </Link>
-                <Link href="/booking">
-                  <a className="text-lg font-medium">Book Now</a>
-                </Link>
-                 <Link href="/login">
-                  <Button className="w-full rounded-full">Login</Button>
-                </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
+          {/* Mobile Profile Icon */}
+          <div className="md:hidden flex items-center gap-4">
+             {isLoggedIn && (
+               <Link href="/dashboard">
+                 <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20">A</div>
+               </Link>
+             )}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="bg-background/50 backdrop-blur-sm">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <div className="flex flex-col gap-6 mt-10">
+                  <Link href="/"><a className="text-lg font-medium">Home</a></Link>
+                  <Link href="/services"><a className="text-lg font-medium">Services</a></Link>
+                  <Link href="/about"><a className="text-lg font-medium">About</a></Link>
+                  <Link href="/booking"><a className="text-lg font-medium">Book Now</a></Link>
+                  {!isLoggedIn ? (
+                    <Link href="/login"><Button className="w-full rounded-full">Login</Button></Link>
+                  ) : (
+                    <Button variant="outline" className="w-full rounded-full" onClick={() => { localStorage.removeItem("darzi_logged_in"); window.location.href="/"; }}>Logout</Button>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
@@ -92,7 +100,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t bg-primary/5 py-20 px-6 md:px-12">
+      {/* Mobile Bottom Tab Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t h-20 px-6 flex items-center justify-between z-50">
+        <Link href="/">
+          <a className={`flex flex-col items-center gap-1 ${location === '/' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <Home className="h-6 w-6" />
+            <span className="text-[10px] font-medium">Home</span>
+          </a>
+        </Link>
+        <Link href="/services">
+          <a className={`flex flex-col items-center gap-1 ${location === '/services' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <ClipboardList className="h-6 w-6" />
+            <span className="text-[10px] font-medium">Services</span>
+          </a>
+        </Link>
+        <Link href="/booking">
+          <a className="flex flex-col items-center gap-1 -translate-y-4">
+            <div className="h-14 w-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/30 ring-4 ring-background">
+              <PlusCircle className="h-8 w-8" />
+            </div>
+          </a>
+        </Link>
+        <Link href="/dashboard">
+          <a className={`flex flex-col items-center gap-1 ${location === '/dashboard' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <ClipboardList className="h-6 w-6" />
+            <span className="text-[10px] font-medium">Orders</span>
+          </a>
+        </Link>
+        <Link href={isLoggedIn ? "/dashboard" : "/login"}>
+          <a className={`flex flex-col items-center gap-1 ${location === '/login' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <User className="h-6 w-6" />
+            <span className="text-[10px] font-medium">Profile</span>
+          </a>
+        </Link>
+      </nav>
+
+      <footer className="hidden md:block border-t bg-primary/5 py-20 px-6 md:px-12">
         <div className="container mx-auto grid md:grid-cols-4 gap-12">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -104,14 +147,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
               Elevating the standard of garment care through precision, passion, and a commitment to timeless quality.
             </p>
-            <div className="flex gap-4">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">In</span>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">Tw</span>
-              </div>
-            </div>
           </div>
           
           <div>
