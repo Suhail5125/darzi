@@ -8,7 +8,7 @@ export default function About() {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-primary text-white">
         <div className="absolute inset-0 z-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1558603668-6570496b66f8?auto=format&fit=crop&q=80')] bg-cover bg-center" />
-        <div className="container mx-auto px-6 relative z-10 text-center -mt-10">
+        <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
