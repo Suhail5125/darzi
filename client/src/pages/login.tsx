@@ -8,7 +8,7 @@ export default function Login() {
 
   const handleLogin = () => {
     // Mock login functionality
-    setLocation("/");
+    setLocation("/dashboard");
   };
 
   return (
