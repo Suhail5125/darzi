@@ -9,13 +9,13 @@ import Login from "@/pages/login";
 import Booking from "@/pages/booking";
 import About from "@/pages/about";
 import Services from "@/pages/services";
-import Layout from "@/components/layout";
+import Layout, { Footer } from "@/components/layout";
 
 function Router() {
   return (
     <Layout>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={HomeWithFooter} />
         <Route path="/login" component={Login} />
         <Route path="/booking" component={Booking} />
         <Route path="/about" component={About} />
@@ -23,6 +23,15 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </Layout>
+  );
+}
+
+function HomeWithFooter() {
+  return (
+    <>
+      <Home />
+      <Footer />
+    </>
   );
 }
 

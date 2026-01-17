@@ -2,20 +2,11 @@ import React from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Scissors } from "lucide-react";
+import { Menu } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
-  const [isScrolled, setIsScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
     const isActive = location === href;
@@ -88,71 +79,75 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 pt-20">
         {children}
       </main>
-
-      <footer className="border-t bg-primary/5 py-20 px-6 md:px-12">
-        <div className="container mx-auto grid md:grid-cols-4 gap-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-               <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 bg-background">
-                 <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full" />
-              </div>
-              <span className="font-serif text-2xl font-bold text-primary tracking-tight">Darzi</span>
-            </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Elevating the standard of garment care through precision, passion, and a commitment to timeless quality.
-            </p>
-            <div className="flex gap-4">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">In</span>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">Tw</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-serif font-bold text-lg mb-6">Services</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="hover:text-primary transition-colors cursor-pointer">Premium Dry Cleaning</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Bespoke Tailoring</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Expert Alterations</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Steam Pressing</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Eco Washing</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-serif font-bold text-lg mb-6">Company</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="hover:text-primary transition-colors cursor-pointer">About Darzi</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Our Craftsmanship</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Sustainability</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Contact</li>
-            </ul>
-          </div>
-
-          <div>
-             <h4 className="font-serif font-bold text-lg mb-6">Experience Darzi</h4>
-             <p className="text-sm text-muted-foreground mb-4 italic">Join our newsletter for exclusive fabric care tips and first access to new collections.</p>
-             <div className="flex gap-2">
-               <input type="email" placeholder="Email" className="bg-background border border-primary/10 rounded-full px-4 py-2 text-xs flex-1 outline-none focus:border-primary/30" />
-               <Button size="sm" className="rounded-full">Join</Button>
-             </div>
-          </div>
-        </div>
-        <div className="container mx-auto mt-20 pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground uppercase tracking-widest">
-          <span>© 2026 Darzi Craftsmanship</span>
-          <div className="flex gap-8">
-            <span className="hover:text-primary cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">Accessibility</span>
-          </div>
-        </div>
-      </footer>
     </div>
+  );
+}
+
+export function Footer() {
+  return (
+    <footer className="border-t bg-primary/5 py-20 px-6 md:px-12">
+      <div className="container mx-auto grid md:grid-cols-4 gap-12">
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+             <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 bg-background">
+               <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full" />
+            </div>
+            <span className="font-serif text-2xl font-bold text-primary tracking-tight">Darzi</span>
+          </div>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+            Elevating the standard of garment care through precision, passion, and a commitment to timeless quality.
+          </p>
+          <div className="flex gap-4">
+            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+              <span className="text-xs font-bold">In</span>
+            </div>
+            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+              <span className="text-xs font-bold">Tw</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 className="font-serif font-bold text-lg mb-6">Services</h4>
+          <ul className="space-y-4 text-sm text-muted-foreground">
+            <li className="hover:text-primary transition-colors cursor-pointer">Premium Dry Cleaning</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Bespoke Tailoring</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Expert Alterations</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Steam Pressing</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Eco Washing</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-serif font-bold text-lg mb-6">Company</h4>
+          <ul className="space-y-4 text-sm text-muted-foreground">
+            <li className="hover:text-primary transition-colors cursor-pointer">About Darzi</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Our Craftsmanship</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Sustainability</li>
+            <li className="hover:text-primary transition-colors cursor-pointer">Contact</li>
+          </ul>
+        </div>
+
+        <div>
+           <h4 className="font-serif font-bold text-lg mb-6">Experience Darzi</h4>
+           <p className="text-sm text-muted-foreground mb-4 italic">Join our newsletter for exclusive fabric care tips and first access to new collections.</p>
+           <div className="flex gap-2">
+             <input type="email" placeholder="Email" className="bg-background border border-primary/10 rounded-full px-4 py-2 text-xs flex-1 outline-none focus:border-primary/30" />
+             <Button size="sm" className="rounded-full">Join</Button>
+           </div>
+        </div>
+      </div>
+      <div className="container mx-auto mt-20 pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground uppercase tracking-widest">
+        <span>© 2026 Darzi Craftsmanship</span>
+        <div className="flex gap-8">
+          <span className="hover:text-primary cursor-pointer transition-colors">Privacy</span>
+          <span className="hover:text-primary cursor-pointer transition-colors">Terms</span>
+          <span className="hover:text-primary cursor-pointer transition-colors">Accessibility</span>
+        </div>
+      </div>
+    </footer>
   );
 }
