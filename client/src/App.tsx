@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Login from "@/pages/login";
 import Booking from "@/pages/booking";
 import About from "@/pages/about";
+import Services from "@/pages/services";
 import Layout from "@/components/layout";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
         <Route path="/login" component={Login} />
         <Route path="/booking" component={Booking} />
         <Route path="/about" component={About} />
+        <Route path="/services" component={Services} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
