@@ -52,6 +52,17 @@ const categories = [
 ];
 
 export default function Home() {
+  const [location, setLocation] = useLocation();
+
+  const handleServiceClick = (serviceId: string) => {
+    const isLoggedIn = localStorage.getItem("darzi_logged_in") === "true";
+    if (isLoggedIn) {
+      setLocation(`/booking?service=${serviceId}`);
+    } else {
+      setLocation("/login");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}
@@ -75,11 +86,13 @@ export default function Home() {
               Experience the finest garment care, from precision dry cleaning to bespoke tailoring. We treat every thread with respect.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/booking">
-                <Button size="lg" className="rounded-full px-8 h-14 text-lg shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-105">
-                  Book a Service
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                className="rounded-full px-8 h-14 text-lg shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-105"
+                onClick={() => handleServiceClick("washing")}
+              >
+                Book a Service
+              </Button>
               <Link href="/services">
                 <Button variant="outline" size="lg" className="rounded-full px-8 h-14 text-lg bg-background/50 backdrop-blur-sm border-primary/20 hover:bg-background/80">
                   Explore Services
@@ -106,27 +119,25 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <Link href={`/booking?service=${category.id}`}>
-                <div className="group cursor-pointer">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-6 shadow-md hover:shadow-xl transition-all duration-500">
-                    <img 
-                      src={category.image} 
-                      alt={category.title}
-                      className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <div className="bg-background/90 backdrop-blur-md p-4 rounded-xl translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                        <h3 className="font-serif text-xl font-bold text-primary mb-1 flex items-center justify-between">
-                          {category.title}
-                          <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2">{category.description}</p>
-                      </div>
+              <div className="group cursor-pointer" onClick={() => handleServiceClick(category.id)}>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-6 shadow-md hover:shadow-xl transition-all duration-500">
+                  <img 
+                    src={category.image} 
+                    alt={category.title}
+                    className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <div className="bg-background/90 backdrop-blur-md p-4 rounded-xl translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <h3 className="font-serif text-xl font-bold text-primary mb-1 flex items-center justify-between">
+                        {category.title}
+                        <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{category.description}</p>
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>

@@ -64,6 +64,17 @@ const allServices = [
 ];
 
 export default function Services() {
+  const [location, setLocation] = useLocation();
+
+  const handleBookingClick = (serviceId: string) => {
+    const isLoggedIn = localStorage.getItem("darzi_logged_in") === "true";
+    if (isLoggedIn) {
+      setLocation(`/booking?service=${serviceId}`);
+    } else {
+      setLocation("/login");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-16 pb-24">
       {/* Hero */}
@@ -124,12 +135,10 @@ export default function Services() {
 
               <div className="flex items-center justify-between pt-6 border-t border-primary/5">
                 <span className="font-serif text-xl font-bold text-primary">{service.price}</span>
-                <Link href={`/booking?service=${service.id}`}>
-                  <Button className="rounded-full px-8 group">
-                    Book Now
-                    <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
+                <Button className="rounded-full px-8 group" onClick={() => handleBookingClick(service.id)}>
+                  Book Now
+                  <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+                </Button>
               </div>
             </div>
           </motion.div>
