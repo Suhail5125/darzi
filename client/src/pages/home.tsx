@@ -10,8 +10,15 @@ import dryCleaningImg from "@assets/generated_images/dry_cleaning_service_visual
 import starchImg from "@assets/generated_images/starch_service_crisp_linens.png";
 import alterationImg from "@assets/generated_images/clothing_alteration_service.png";
 import tailoringImg from "@assets/generated_images/bespoke_tailoring_service.png";
+import washingImg from "@assets/generated_images/professional_laundry_washing_service.png";
 
 const categories = [
+  {
+    id: "washing",
+    title: "Eco Washing",
+    description: "Gentle, eco-conscious laundry care for everyday essentials.",
+    image: washingImg,
+  },
   {
     id: "pressing",
     title: "Steam Pressing",
