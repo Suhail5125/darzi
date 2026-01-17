@@ -30,24 +30,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans">
-      <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${isScrolled ? "h-16 bg-background/80 backdrop-blur-md border-b" : "h-20 bg-transparent"}`}>
-        <div className="mx-auto px-6 md:px-12 h-full flex items-center justify-between">
+      <header className="fixed top-0 z-50 w-full transition-all duration-300">
+        <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
           <Link href="/">
             <a className="flex items-center gap-3 group">
-              <div className={`h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 group-hover:border-primary/30 transition-colors ${isScrolled ? "bg-background" : "bg-background/20 backdrop-blur-sm"}`}>
+              <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 group-hover:border-primary/30 transition-colors bg-background/50 backdrop-blur-sm">
                  <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full" />
               </div>
-              <span className={`font-serif text-2xl font-bold tracking-tight transition-colors ${!isScrolled && location === "/" ? "text-primary" : "text-primary"}`}>Darzi</span>
+              <span className="font-serif text-2xl font-bold tracking-tight text-primary">Darzi</span>
             </a>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className={`hidden md:flex items-center gap-8 px-8 py-2 rounded-full border transition-all duration-300 ${isScrolled ? "bg-background/50 backdrop-blur-md border-primary/5 shadow-sm" : "bg-white/10 backdrop-blur-sm border-white/10"}`}>
+          <nav className="hidden md:flex items-center gap-8 bg-background/50 backdrop-blur-md px-8 py-2 rounded-full border border-primary/5 shadow-sm">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/about">About</NavLink>
             <Link href="/login">
-              <Button variant="outline" className={`ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary transition-all ${!isScrolled && location === "/" ? "bg-white/20" : ""}`}>
+              <Button variant="outline" className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary">
                 Login
               </Button>
             </Link>
