@@ -67,14 +67,14 @@ export default function Services() {
   return (
     <div className="flex flex-col gap-16 pb-24">
       {/* Hero */}
-      <section className="bg-primary/5 pt-40 pb-20">
+      <section className="bg-primary/5 py-24">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-primary mb-6">Our Craftsmanship</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            <h1 className="text-5xl md:text-7xl font-serif font-bold text-primary mb-6">Our Craftsmanship</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg font-light">
               Explore our range of premium garment care services. Each category is handled by specialists dedicated to perfection.
             </p>
           </motion.div>

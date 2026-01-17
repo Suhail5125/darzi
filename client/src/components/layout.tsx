@@ -21,11 +21,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans">
-      <header className="fixed top-0 z-50 w-full transition-all duration-300">
-        <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+      <header className="fixed top-0 z-50 w-full h-20 flex items-center transition-all duration-300 bg-background/80 backdrop-blur-xl border-b border-primary/5">
+        <div className="mx-auto w-full px-6 md:px-12 flex items-center justify-between">
           <Link href="/">
             <a className="flex items-center gap-3 group">
-              <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 group-hover:border-primary/30 transition-colors bg-background/50 backdrop-blur-sm">
+              <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 group-hover:border-primary/30 transition-colors bg-white/50 backdrop-blur-sm">
                  <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full" />
               </div>
               <span className="font-serif text-2xl font-bold tracking-tight text-primary">Darzi</span>
@@ -33,17 +33,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 bg-background/50 backdrop-blur-md px-8 py-2 rounded-full border border-primary/5 shadow-sm">
+          <nav className="hidden md:flex items-center gap-8 bg-white/40 backdrop-blur-md px-6 py-2 rounded-full border border-primary/10 shadow-sm">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/about">About</NavLink>
             <Link href="/login">
-              <Button variant="outline" className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary">
+              <Button variant="outline" className="ml-4 h-9 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors">
                 Login
               </Button>
             </Link>
             <Link href="/booking">
-              <Button className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+              <Button className="h-9 rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                 Book Service
               </Button>
             </Link>
@@ -52,8 +52,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Mobile Nav */}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="bg-background/50 backdrop-blur-sm">
-                <Menu className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="bg-white/40 backdrop-blur-sm rounded-full">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent>
