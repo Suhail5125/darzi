@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, Clock, ShieldCheck, Scissors } from "lucide-react";
-import { Link, useLocation } from "wouter";
+import { ArrowRight, Star, Clock, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 
 // Import generated assets
 import pressingImg from "@assets/generated_images/professional_clothes_pressing_service.png";
@@ -53,98 +52,6 @@ const categories = [
 ];
 
 export default function Home() {
-  const [location, setLocation] = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("darzi_logged_in") === "true");
-  }, []);
-
-  const handleServiceClick = (serviceId: string) => {
-    if (isLoggedIn) {
-      setLocation(`/booking?service=${serviceId}`);
-    } else {
-      setLocation("/login");
-    }
-  };
-
-  if (isLoggedIn) {
-    return (
-      <div className="flex flex-col gap-12 pt-32 pb-16">
-        <section className="container mx-auto px-6 md:px-12">
-          <div className="bg-primary rounded-3xl p-8 md:p-12 text-white overflow-hidden relative">
-            <div className="relative z-10">
-              <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 italic">Hello, Alex.</h1>
-              <p className="text-white/80 text-lg max-w-xl mb-8">
-                Ready to refresh your wardrobe today? Your preferred master tailor is available for a consultation.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/booking">
-                  <Button variant="secondary" className="rounded-full px-8 h-12 shadow-lg">
-                    Schedule New Pick-up
-                  </Button>
-                </Link>
-                <Link href="/dashboard">
-                  <Button variant="outline" className="rounded-full px-8 h-12 border-white/20 hover:bg-white/10">
-                    Track Your Orders
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4 scale-150">
-              <Scissors className="h-64 w-64" />
-            </div>
-          </div>
-        </section>
-
-        <section className="container mx-auto px-6 md:px-12">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-serif font-bold text-primary">Your Quick Services</h2>
-            <Link href="/services">
-              <Button variant="link" className="text-primary p-0">View all services</Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            {categories.map((category) => (
-              <div 
-                key={category.id}
-                onClick={() => handleServiceClick(category.id)}
-                className="group cursor-pointer bg-background border border-primary/5 rounded-2xl p-4 text-center hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all"
-              >
-                <div className="aspect-square rounded-xl overflow-hidden mb-4 bg-muted">
-                  <img src={category.image} alt={category.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                </div>
-                <h3 className="font-serif font-bold text-primary text-sm">{category.title}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="container mx-auto px-6 md:px-12">
-          <Card className="border-primary/10 bg-primary/5 overflow-hidden">
-            <CardContent className="p-0 flex flex-col md:flex-row items-center">
-              <div className="flex-1 p-8 md:p-12 space-y-4">
-                <span className="text-xs font-bold tracking-widest text-primary/60 uppercase">Member Exclusive</span>
-                <h2 className="text-3xl font-serif font-bold text-primary">Complimentary Fabric Consultation</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  As a Darzi Gold member, you're entitled to a free fabric longevity assessment for your luxury garments.
-                </p>
-                <Button className="rounded-full px-8">Claim Benefit</Button>
-              </div>
-              <div className="flex-1 w-full md:w-1/2 aspect-video md:aspect-auto">
-                <img 
-                  src="https://images.unsplash.com/photo-1558603668-6570496b66f8?auto=format&fit=crop&q=80" 
-                  alt="Fabric Consultation" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}
@@ -168,13 +75,11 @@ export default function Home() {
               Experience the finest garment care, from precision dry cleaning to bespoke tailoring. We treat every thread with respect.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="rounded-full px-8 h-14 text-lg shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-105"
-                onClick={() => handleServiceClick("washing")}
-              >
-                Book a Service
-              </Button>
+              <Link href="/booking">
+                <Button size="lg" className="rounded-full px-8 h-14 text-lg shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-105">
+                  Book a Service
+                </Button>
+              </Link>
               <Link href="/services">
                 <Button variant="outline" size="lg" className="rounded-full px-8 h-14 text-lg bg-background/50 backdrop-blur-sm border-primary/20 hover:bg-background/80">
                   Explore Services
@@ -201,25 +106,27 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="group cursor-pointer" onClick={() => handleServiceClick(category.id)}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-6 shadow-md hover:shadow-xl transition-all duration-500">
-                  <img 
-                    src={category.image} 
-                    alt={category.title}
-                    className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-background/90 backdrop-blur-md p-4 rounded-xl translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <h3 className="font-serif text-xl font-bold text-primary mb-1 flex items-center justify-between">
-                        {category.title}
-                        <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                      </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{category.description}</p>
+              <Link href={`/booking?service=${category.id}`}>
+                <div className="group cursor-pointer">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-6 shadow-md hover:shadow-xl transition-all duration-500">
+                    <img 
+                      src={category.image} 
+                      alt={category.title}
+                      className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <div className="bg-background/90 backdrop-blur-md p-4 rounded-xl translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <h3 className="font-serif text-xl font-bold text-primary mb-1 flex items-center justify-between">
+                          {category.title}
+                          <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                        </h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2">{category.description}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -7,7 +7,7 @@ export default function Login() {
   const [_, setLocation] = useLocation();
 
   const handleLogin = () => {
-    localStorage.setItem("darzi_logged_in", "true");
+    // Mock login functionality
     setLocation("/dashboard");
   };
 
