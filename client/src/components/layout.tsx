@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Scissors, Home, ClipboardList, User, PlusCircle } from "lucide-react";
+import { Menu, Scissors, Home, ClipboardList, User, PlusCircle, ShoppingBag, ShoppingCart } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -41,8 +41,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 bg-background/50 backdrop-blur-md px-8 py-2 rounded-full border border-primary/5 shadow-sm">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/services">Services</NavLink>
+            <NavLink href={isLoggedIn ? "/products" : "/services"}>{isLoggedIn ? "Products" : "Services"}</NavLink>
             <NavLink href="/about">About</NavLink>
+            
+            {isLoggedIn && (
+              <>
+                <NavLink href="/cart">Cart</NavLink>
+                <NavLink href="/account">Account</NavLink>
+              </>
+            )}
             
             {!isLoggedIn ? (
               <Link href="/login">
@@ -51,11 +58,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Button>
               </Link>
             ) : (
-              <Link href="/dashboard">
-                <Button variant="ghost" className="ml-4 h-10 w-10 rounded-full p-0 overflow-hidden border border-primary/20">
-                  <div className="bg-primary/10 w-full h-full flex items-center justify-center text-primary font-bold">A</div>
-                </Button>
-              </Link>
+              <Button 
+                variant="ghost" 
+                className="ml-4 h-10 w-10 rounded-full p-0 overflow-hidden border border-primary/20"
+                onClick={() => { localStorage.removeItem("darzi_logged_in"); window.location.href="/"; }}
+              >
+                <div className="bg-primary/10 w-full h-full flex items-center justify-center text-primary font-bold">A</div>
+              </Button>
             )}
 
             <Link href="/booking">
@@ -108,10 +117,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="text-[10px] font-medium">Home</span>
           </a>
         </Link>
-        <Link href="/services">
-          <a className={`flex flex-col items-center gap-1 ${location === '/services' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <ClipboardList className="h-6 w-6" />
-            <span className="text-[10px] font-medium">Services</span>
+        <Link href={isLoggedIn ? "/products" : "/services"}>
+          <a className={`flex flex-col items-center gap-1 ${location === (isLoggedIn ? '/products' : '/services') ? 'text-primary' : 'text-muted-foreground'}`}>
+            <ShoppingBag className="h-6 w-6" />
+            <span className="text-[10px] font-medium">{isLoggedIn ? "Products" : "Services"}</span>
           </a>
         </Link>
         <Link href="/booking">
@@ -121,16 +130,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </a>
         </Link>
-        <Link href="/dashboard">
-          <a className={`flex flex-col items-center gap-1 ${location === '/dashboard' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <ClipboardList className="h-6 w-6" />
-            <span className="text-[10px] font-medium">Orders</span>
+        <Link href="/cart">
+          <a className={`flex flex-col items-center gap-1 ${location === '/cart' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <ShoppingCart className="h-6 w-6" />
+            <span className="text-[10px] font-medium">Cart</span>
           </a>
         </Link>
-        <Link href={isLoggedIn ? "/dashboard" : "/login"}>
-          <a className={`flex flex-col items-center gap-1 ${location === '/login' ? 'text-primary' : 'text-muted-foreground'}`}>
+        <Link href={isLoggedIn ? "/account" : "/login"}>
+          <a className={`flex flex-col items-center gap-1 ${location === (isLoggedIn ? '/account' : '/login') ? 'text-primary' : 'text-muted-foreground'}`}>
             <User className="h-6 w-6" />
-            <span className="text-[10px] font-medium">Profile</span>
+            <span className="text-[10px] font-medium">{isLoggedIn ? "Account" : "Login"}</span>
           </a>
         </Link>
       </nav>
