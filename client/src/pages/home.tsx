@@ -59,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-16 pb-16">
+    <div className="flex flex-col gap-16 pt-[16px] pb-[16px]">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-secondary/30">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-multiply" />
@@ -113,7 +113,6 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </section>
-
       {/* Categories Grid */}
       <section id="services-grid" className="container mx-auto px-4 pt-16">
         <div className="text-center mb-16">
@@ -155,7 +154,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
       {/* Features / Trust Section */}
       <section className="bg-primary/5 py-24 rounded-3xl mx-4 lg:mx-8">
         <div className="container mx-auto px-4">
