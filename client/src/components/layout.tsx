@@ -8,6 +8,7 @@ import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isProductsPage = location === "/products";
 
   useEffect(() => {
     const status = localStorage.getItem("darzi_logged_in") === "true";
@@ -27,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans pb-[calc(5rem+env(safe-area-inset-bottom))] pt-[env(safe-area-inset-top)] md:pb-0">
-      <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background/80 backdrop-blur-lg border-b border-primary/5">
+      <header className={`fixed top-0 z-50 w-full transition-all duration-300 bg-background/80 backdrop-blur-lg border-b border-primary/5 ${isProductsPage ? 'hidden md:block' : 'block'}`}>
         <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between pt-[env(safe-area-inset-top)]">
           <Link href="/">
             <a className="flex items-center gap-3 group">
