@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, Clock, ShieldCheck } from "lucide-react";
+import { ArrowRight, Star, Clock, ShieldCheck, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
 
 // Import generated assets
@@ -52,19 +51,26 @@ const categories = [
 ];
 
 export default function Home() {
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services-grid');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-secondary/30">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-multiply" />
         
-        <div className="container mx-auto px-4 relative z-10 text-center pt-20">
+        <div className="container mx-auto px-4 relative z-10 text-center pt-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-block py-1.5 px-4 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-8 tracking-wide">
+            <span className="inline-block py-1.5 px-4 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-2 tracking-wide">
               EST. 2026
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-primary mb-6 tracking-tight leading-tight">
@@ -88,10 +94,28 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 cursor-pointer"
+          onClick={scrollToServices}
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="flex flex-col items-center gap-2"
+          >
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/40">Scroll</span>
+            <ChevronDown className="h-6 w-6 text-primary/40" />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Categories Grid */}
-      <section className="container mx-auto px-4">
+      <section id="services-grid" className="container mx-auto px-4 pt-16">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Curated Services</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Select a category to begin your journey to garment perfection.</p>
