@@ -65,9 +65,9 @@ const allServices = [
 
 export default function Services() {
   return (
-    <div className="flex flex-col gap-16 pb-24">
+    <div className="flex flex-col gap-16 pb-24 page-padding-top">
       {/* Hero */}
-      <section className="bg-primary/5 pt-40 pb-20">
+      <section className="bg-primary/5 py-20 rounded-3xl mx-6 md:mx-12">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

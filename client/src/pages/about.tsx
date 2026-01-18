@@ -4,9 +4,9 @@ import tailoringImg from "@assets/generated_images/bespoke_tailoring_service.png
 
 export default function About() {
   return (
-    <div className="flex flex-col gap-24 pb-24">
+    <div className="flex flex-col gap-24 pb-24 page-padding-top">
       {/* Hero */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-primary text-white">
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-primary text-white rounded-3xl mx-6 md:mx-12">
         <div className="absolute inset-0 z-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1558603668-6570496b66f8?auto=format&fit=crop&q=80')] bg-cover bg-center" />
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div
