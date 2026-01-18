@@ -87,12 +87,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Sheet>
         </div>
       </header>
-
       <main className="flex-1">
         {children}
       </main>
-
-      <footer className="border-t bg-primary/5 py-20 px-6 md:px-12">
+      <footer className="border-t bg-primary/5 py-20 px-6 md:px-12 pt-[16px] pb-[16px]">
         <div className="container mx-auto grid md:grid-cols-4 gap-12">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
