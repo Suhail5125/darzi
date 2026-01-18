@@ -110,39 +110,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile Bottom Tab Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t h-20 px-6 flex items-center justify-between z-50">
-        <Link href="/">
-          <a className={`flex flex-col items-center gap-1 ${location === '/' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <Home className="h-6 w-6" />
-            <span className="text-[10px] font-medium">Home</span>
-          </a>
-        </Link>
-        <Link href={isLoggedIn ? "/products" : "/services"}>
-          <a className={`flex flex-col items-center gap-1 ${location === (isLoggedIn ? '/products' : '/services') ? 'text-primary' : 'text-muted-foreground'}`}>
-            <ShoppingBag className="h-6 w-6" />
-            <span className="text-[10px] font-medium">{isLoggedIn ? "Products" : "Services"}</span>
-          </a>
-        </Link>
-        <Link href="/booking">
-          <a className="flex flex-col items-center gap-1 -translate-y-4">
-            <div className="h-14 w-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/30 ring-4 ring-background">
-              <PlusCircle className="h-8 w-8" />
-            </div>
-          </a>
-        </Link>
-        <Link href="/cart">
-          <a className={`flex flex-col items-center gap-1 ${location === '/cart' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <ShoppingCart className="h-6 w-6" />
-            <span className="text-[10px] font-medium">Cart</span>
-          </a>
-        </Link>
-        <Link href={isLoggedIn ? "/account" : "/login"}>
-          <a className={`flex flex-col items-center gap-1 ${location === (isLoggedIn ? '/account' : '/login') ? 'text-primary' : 'text-muted-foreground'}`}>
-            <User className="h-6 w-6" />
-            <span className="text-[10px] font-medium">{isLoggedIn ? "Account" : "Login"}</span>
-          </a>
-        </Link>
-      </nav>
+      {isLoggedIn && (
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t h-20 px-6 flex items-center justify-between z-50">
+          <Link href="/">
+            <a className={`flex flex-col items-center gap-1 ${location === '/' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <Home className="h-6 w-6" />
+              <span className="text-[10px] font-medium">Home</span>
+            </a>
+          </Link>
+          <Link href="/products">
+            <a className={`flex flex-col items-center gap-1 ${location === '/products' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <ShoppingBag className="h-6 w-6" />
+              <span className="text-[10px] font-medium">Products</span>
+            </a>
+          </Link>
+          <Link href="/booking">
+            <a className="flex flex-col items-center gap-1 -translate-y-4">
+              <div className="h-14 w-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/30 ring-4 ring-background">
+                <PlusCircle className="h-8 w-8" />
+              </div>
+            </a>
+          </Link>
+          <Link href="/cart">
+            <a className={`flex flex-col items-center gap-1 ${location === '/cart' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <ShoppingCart className="h-6 w-6" />
+              <span className="text-[10px] font-medium">Cart</span>
+            </a>
+          </Link>
+          <Link href="/account">
+            <a className={`flex flex-col items-center gap-1 ${location === '/account' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <User className="h-6 w-6" />
+              <span className="text-[10px] font-medium">Account</span>
+            </a>
+          </Link>
+        </nav>
+      )}
 
       <footer className="hidden md:block border-t bg-primary/5 py-20 px-6 md:px-12">
         <div className="container mx-auto grid md:grid-cols-4 gap-12">
