@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Scissors, Home, ClipboardList, User, PlusCircle, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Menu, Scissors, Home, ClipboardList, User, PlusCircle, ShoppingBag, ShoppingCart, Bell } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -26,9 +26,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background font-sans pb-20 md:pb-0">
-      <header className="fixed top-0 z-50 w-full transition-all duration-300">
-        <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+    <div className="min-h-screen flex flex-col bg-background font-sans pb-[calc(5rem+env(safe-area-inset-bottom))] pt-[env(safe-area-inset-top)] md:pb-0">
+      <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background/80 backdrop-blur-lg border-b border-primary/5">
+        <div className="mx-auto px-6 md:px-12 h-20 flex items-center justify-between pt-[env(safe-area-inset-top)]">
           <Link href="/">
             <a className="flex items-center gap-3 group">
               <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 group-hover:border-primary/30 transition-colors bg-background/50 backdrop-blur-sm">
@@ -42,12 +42,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="hidden md:flex items-center gap-8 bg-background/50 backdrop-blur-md px-8 py-2 rounded-full border border-primary/5 shadow-sm">
             <NavLink href="/">Home</NavLink>
             <NavLink href={isLoggedIn ? "/products" : "/services"}>{isLoggedIn ? "Products" : "Services"}</NavLink>
-            <NavLink href="/about">About</NavLink>
+            
+            {/* Hide About in post-login header */}
+            {!isLoggedIn && <NavLink href="/about">About</NavLink>}
             
             {isLoggedIn && (
               <>
                 <NavLink href="/cart">Cart</NavLink>
                 <NavLink href="/account">Account</NavLink>
+                <Link href="/notifications">
+                  <a className={`transition-colors hover:text-primary ${location === '/notifications' ? 'text-primary' : 'text-muted-foreground'}`}>
+                    <Bell className="h-5 w-5" />
+                  </a>
+                </Link>
               </>
             )}
             
@@ -74,11 +81,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
 
-          {/* Mobile Profile Icon */}
+          {/* Mobile Actions */}
           <div className="md:hidden flex items-center gap-4">
              {isLoggedIn && (
-               <Link href="/dashboard">
-                 <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20">A</div>
+               <Link href="/notifications">
+                 <Button variant="ghost" size="icon" className="relative">
+                   <Bell className="h-6 w-6 text-primary" />
+                   <span className="absolute top-2 right-2 h-2 w-2 bg-destructive rounded-full border-2 border-background"></span>
+                 </Button>
                </Link>
              )}
             <Sheet>
