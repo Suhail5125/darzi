@@ -128,7 +128,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="font-serif font-bold text-lg mb-6">Company</h4>
               <ul className="space-y-3 text-sm text-primary-foreground/70">
-                {['About Us', 'Our Craft', 'Sustainability', 'Booking', 'Login'].map((item) => (
+                {['About Us', 'Our Craft', 'Sustainability', 'Careers', 'Become a Seller'].map((item) => (
                   <li key={item}>
                     <a href={item.toLowerCase() === 'booking' ? '/booking' : item.toLowerCase() === 'login' ? '/login' : '/about'} className="hover:text-white transition-colors">{item}</a>
                   </li>
@@ -137,15 +137,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="space-y-6">
-              <h4 className="font-serif font-bold text-lg mb-4">Newsletter</h4>
-              <p className="text-sm text-primary-foreground/70 italic">Join for exclusive fabric care tips.</p>
-              <div className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="Email" 
-                  className="bg-white/10 border border-white/10 rounded-full px-4 py-2 text-xs flex-1 outline-none focus:border-white/30 text-white" 
-                />
-                <Button size="sm" className="rounded-full bg-white text-primary hover:bg-white/90">Join</Button>
+              <h4 className="font-serif font-bold text-lg mb-4">Support & Contact</h4>
+              <div className="space-y-4 text-sm text-primary-foreground/70">
+                <p className="flex items-center gap-3">
+                  <span className="h-5 w-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] uppercase">M</span>
+                  care@darzi.com
+                </p>
+                <p className="flex items-center gap-3">
+                  <span className="h-5 w-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] uppercase">P</span>
+                  +1 (555) 234-5678
+                </p>
+                <p className="flex items-center gap-3 italic">
+                  <span className="h-5 w-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] uppercase">A</span>
+                  123 Luxury Lane, Fashion District, NY
+                </p>
+                <div className="pt-2">
+                  <a href="#" className="hover:text-white transition-colors font-bold">FAQ</a>
+                </div>
               </div>
             </div>
           </div>
