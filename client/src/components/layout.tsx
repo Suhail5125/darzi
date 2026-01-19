@@ -2,12 +2,14 @@ import React from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Scissors } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Menu, Scissors, Mail, Lock } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoginOpen(false);
+    setLocation("/dashboard");
+  };
 
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
     const isActive = location === href;
@@ -46,11 +54,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/about">About</NavLink>
-            <Link href="/login">
-              <Button variant="outline" className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary">
-                Login
-              </Button>
-            </Link>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsLoginOpen(true)}
+              className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary"
+            >
+              Login
+            </Button>
             <Link href="/booking">
               <Button className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                 Book Service
@@ -79,14 +89,73 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link href="/booking">
                   <a className="text-lg font-medium">Book Now</a>
                 </Link>
-                 <Link href="/login">
-                  <Button className="w-full rounded-full">Login</Button>
-                </Link>
+                <Button 
+                  className="w-full rounded-full" 
+                  onClick={() => setIsLoginOpen(true)}
+                >
+                  Login
+                </Button>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </header>
+
+      {/* Login Modal Overlay */}
+      <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+        <DialogContent className="sm:max-w-[425px] rounded-3xl p-0 overflow-hidden border-none shadow-2xl">
+          <div className="bg-primary p-8 text-primary-foreground">
+            <DialogHeader>
+              <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
+                <Lock className="h-6 w-6 text-white" />
+              </div>
+              <DialogTitle className="text-3xl font-serif font-bold text-white">Welcome Back</DialogTitle>
+              <DialogDescription className="text-primary-foreground/70">
+                Enter your credentials to access your Darzi dashboard.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="p-8 bg-background">
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-primary/60 uppercase tracking-widest">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input 
+                      type="email" 
+                      placeholder="alex@example.com"
+                      className="w-full h-12 pl-12 pr-4 rounded-xl border border-primary/10 bg-muted/30 focus:border-primary/30 outline-none transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-primary/60 uppercase tracking-widest">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input 
+                      type="password" 
+                      placeholder="••••••••"
+                      className="w-full h-12 pl-12 pr-4 rounded-xl border border-primary/10 bg-muted/30 focus:border-primary/30 outline-none transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <Button type="submit" className="w-full h-12 rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+                Sign In
+              </Button>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">
+                  Don't have an account? <a href="#" className="text-primary font-bold hover:underline">Register</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <main className="flex-1">
         {children}
       </main>
