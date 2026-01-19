@@ -67,7 +67,7 @@ export default function Services() {
   return (
     <div className="flex flex-col gap-16 pb-24 page-padding-top">
       {/* Hero */}
-      <section className="bg-primary/5 py-20 rounded-3xl mx-6 md:mx-12">
+      <section className="bg-primary/5 py-12 rounded-3xl mx-6 md:mx-12">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -82,7 +82,7 @@ export default function Services() {
       </section>
 
       {/* Services List */}
-      <section className="container mx-auto px-6 md:px-12 space-y-32">
+      <section className="container mx-auto px-6 md:px-12 space-y-20">
         {allServices.map((service, index) => (
           <motion.div
             key={service.id}

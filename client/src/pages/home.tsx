@@ -100,7 +100,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-24 pt-[16px] pb-[16px]">
+    <div className="flex flex-col gap-16 pt-[16px] pb-[16px]">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-secondary/30">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-multiply" />
@@ -198,7 +198,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Section */}
-      <section className="container mx-auto px-4">
+      <section className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
@@ -240,7 +240,7 @@ export default function Home() {
       </section>
 
       {/* Process of Work */}
-      <section className="bg-primary text-white py-32 rounded-[3.5rem] mx-4 lg:mx-8 relative overflow-hidden">
+      <section className="bg-primary text-white py-24 rounded-[3.5rem] mx-4 lg:mx-8 relative overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-10">
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-white rounded-full blur-[120px]" />
@@ -337,7 +337,7 @@ export default function Home() {
       </section>
 
       {/* Trust Section */}
-      <section className="bg-primary/5 py-24 rounded-3xl mx-4 lg:mx-8">
+      <section className="bg-primary/5 py-16 rounded-3xl mx-4 lg:mx-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div className="flex flex-col items-center">

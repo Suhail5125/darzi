@@ -49,7 +49,7 @@ export default function Booking() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-3xl page-padding-top">
+    <div className="container mx-auto px-4 py-8 max-w-3xl page-padding-top">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-serif font-bold text-primary mb-4">Book a Service</h1>
         <p className="text-muted-foreground">Schedule a pickup or consultation at your convenience.</p>

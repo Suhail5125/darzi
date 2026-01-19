@@ -33,7 +33,7 @@ const mockOrders = [
 
 export default function Dashboard() {
   return (
-    <div className="container mx-auto px-6 md:px-12 pb-24 page-padding-top">
+    <div className="container mx-auto px-6 md:px-12 pb-16 page-padding-top">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div>
           <h1 className="text-4xl font-serif font-bold text-primary mb-2">Welcome back, Alex</h1>

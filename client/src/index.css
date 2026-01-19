@@ -134,6 +134,6 @@
 
 @layer utilities {
   .page-padding-top {
-    @apply pt-24 md:pt-32;
+    @apply pt-20 md:pt-24;
   }
 }
