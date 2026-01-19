@@ -143,6 +143,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                 </div>
               </div>
+
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" className="w-4 h-4 rounded border-primary/10 text-primary focus:ring-primary/20 transition-all cursor-pointer" />
+                  <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">Remember me</span>
+                </label>
+                <a href="#" className="text-sm font-bold text-primary hover:underline underline-offset-4">Forgot Password?</a>
+              </div>
+
               <Button type="submit" className="w-full h-12 rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                 Sign In
               </Button>
