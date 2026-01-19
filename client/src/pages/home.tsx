@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, Clock, ShieldCheck, ChevronDown } from "lucide-react";
+import { ArrowRight, Star, Clock, ShieldCheck, ChevronDown, CheckCircle2, Ruler, Wind, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 
 // Import generated assets
@@ -50,6 +50,47 @@ const categories = [
   },
 ];
 
+const processSteps = [
+  {
+    title: "Collection",
+    description: "Schedule a pickup or drop off your garments at our boutique.",
+    icon: <Clock className="h-6 w-6" />,
+  },
+  {
+    title: "Inspection",
+    description: "Master artisans examine fabric type and identify specific needs.",
+    icon: <Ruler className="h-6 w-6" />,
+  },
+  {
+    title: "Expert Care",
+    description: "Precision cleaning or tailoring using premium techniques.",
+    icon: <Wind className="h-6 w-6" />,
+  },
+  {
+    title: "Perfect Return",
+    description: "Garments are hand-delivered, pristine and ready for wear.",
+    icon: <Sparkles className="h-6 w-6" />,
+  },
+];
+
+const testimonials = [
+  {
+    name: "Alexander Reed",
+    role: "CEO, Reed Capital",
+    content: "Darzi is the only service I trust with my bespoke Italian suits. Their attention to detail is truly unmatched in the city.",
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "Fashion Stylist",
+    content: "The starch service for my linens is incredible. Everything comes back with that signature crispness you only find at 5-star hotels.",
+  },
+  {
+    name: "Marcus Thorne",
+    role: "Creative Director",
+    content: "Their alterations saved my favorite vintage coat. You can't even see the repairs. Masterful craftsmanship.",
+  },
+];
+
 export default function Home() {
   const scrollToServices = () => {
     const servicesSection = document.getElementById('services-grid');
@@ -59,7 +100,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-16 pt-[16px] pb-[16px]">
+    <div className="flex flex-col gap-24 pt-[16px] pb-[16px]">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-secondary/30">
         <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-multiply" />
@@ -113,10 +154,11 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </section>
+
       {/* Categories Grid */}
       <section id="services-grid" className="container mx-auto px-4 pt-16">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Curated Services</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">Curated Services</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Select a category to begin your journey to garment perfection.</p>
         </div>
 
@@ -154,7 +196,95 @@ export default function Home() {
           ))}
         </div>
       </section>
-      {/* Features / Trust Section */}
+
+      {/* Why Choose Section */}
+      <section className="container mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1594932224828-b4b059b6ffc0?auto=format&fit=crop&q=80" 
+                alt="Master Craftsman" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-8 -right-8 bg-primary p-8 rounded-3xl shadow-2xl hidden md:block">
+              <p className="text-4xl font-serif font-bold text-white mb-1">15+</p>
+              <p className="text-white/70 text-sm uppercase tracking-widest font-bold">Years of Mastery</p>
+            </div>
+          </div>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-6">Why Choose Darzi?</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We believe that garment care is not just a chore, but an essential ritual for the modern professional. Our approach combines time-honored techniques with cutting-edge technology.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                "Artisan Attention to Detail",
+                "Eco-Conscious Solvents",
+                "Concierge Pickup & Delivery",
+                "Signature Starch Finish",
+                "Master Tailor Inspection",
+                "Fabric Longevity Focus"
+              ].map((benefit, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-primary/80">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process of Work */}
+      <section className="bg-primary text-white py-24 rounded-[3rem] mx-4 lg:mx-8">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">The Darzi Journey</h2>
+            <p className="text-white/60 max-w-2xl mx-auto">A seamless experience from the moment your garment leaves your hand to its pristine return.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative">
+            {processSteps.map((step, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-6">
+                <div className="h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                  {step.icon}
+                </div>
+                <div>
+                  <h3 className="text-xl font-serif font-bold mb-2">{step.title}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">Client Echoes</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">Join the community of professionals who trust Darzi with their wardrobe.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
+            <div key={i} className="p-8 rounded-3xl bg-secondary/20 border border-primary/5 space-y-6">
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-primary text-primary" />)}
+              </div>
+              <p className="italic text-lg text-primary/80 leading-relaxed">"{t.content}"</p>
+              <div>
+                <p className="font-bold text-primary">{t.name}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">{t.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Trust Section */}
       <section className="bg-primary/5 py-24 rounded-3xl mx-4 lg:mx-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
