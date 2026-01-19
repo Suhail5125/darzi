@@ -90,64 +90,90 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-1">
         {children}
       </main>
-      <footer className="border-t bg-primary/5 py-20 px-6 md:px-12 pt-[16px] pb-[16px]">
-        <div className="container mx-auto grid md:grid-cols-4 gap-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-               <div className="h-10 w-10 relative overflow-hidden rounded-full border border-primary/10 bg-background">
-                 <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full" />
+      <footer className="bg-[#1A2E44] text-white pt-24 pb-12 rounded-t-[3.5rem] mx-0 mt-20 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/20 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-20">
+            <div className="space-y-8">
+              <Link href="/">
+                <a className="flex items-center gap-3 group">
+                  <div className="h-12 w-12 relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm group-hover:border-white/30 transition-all">
+                    <img src={logoImage} alt="Darzi Logo" className="object-cover h-full w-full opacity-90 group-hover:opacity-100" />
+                  </div>
+                  <span className="font-serif text-3xl font-bold tracking-tight text-white">Darzi</span>
+                </a>
+              </Link>
+              <p className="text-white/50 text-base leading-relaxed max-w-xs">
+                Redefining garment care through the lens of luxury and precision. Your wardrobe, curated and preserved for generations.
+              </p>
+              <div className="flex gap-4">
+                {['Instagram', 'Twitter', 'LinkedIn'].map((platform) => (
+                  <a key={platform} href="#" className="h-10 w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white hover:border-white/30 transition-all">
+                    <span className="sr-only">{platform}</span>
+                    <div className="w-4 h-4 bg-current rounded-sm" />
+                  </a>
+                ))}
               </div>
-              <span className="font-serif text-2xl font-bold text-primary tracking-tight">Darzi</span>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Elevating the standard of garment care through precision, passion, and a commitment to timeless quality.
-            </p>
-            <div className="flex gap-4">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">In</span>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xs font-bold">Tw</span>
+            
+            <div>
+              <h4 className="font-serif font-bold text-xl mb-8 text-white underline underline-offset-8 decoration-white/10">Services</h4>
+              <ul className="space-y-4 text-white/50">
+                {['Premium Dry Cleaning', 'Bespoke Tailoring', 'Expert Alterations', 'Steam Pressing', 'Eco Washing'].map((item) => (
+                  <li key={item}>
+                    <a href="/services" className="hover:text-white transition-colors flex items-center gap-2 group">
+                      <div className="w-1 h-1 bg-white/20 rounded-full group-hover:w-2 group-hover:bg-white transition-all" />
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-serif font-bold text-xl mb-8 text-white underline underline-offset-8 decoration-white/10">Company</h4>
+              <ul className="space-y-4 text-white/50">
+                {['Our Story', 'Craftsmanship', 'Sustainability', 'Concierge Service', 'Contact'].map((item) => (
+                  <li key={item}>
+                    <a href="/about" className="hover:text-white transition-colors flex items-center gap-2 group">
+                      <div className="w-1 h-1 bg-white/20 rounded-full group-hover:w-2 group-hover:bg-white transition-all" />
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
+              <h4 className="font-serif font-bold text-xl mb-4 text-white">Newsletter</h4>
+              <p className="text-sm text-white/50 mb-6 italic leading-relaxed">Join for exclusive fabric care insights and first access to bespoke events.</p>
+              <div className="space-y-3">
+                <input 
+                  type="email" 
+                  placeholder="Your Email" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-all" 
+                />
+                <Button className="w-full rounded-xl bg-white text-[#1A2E44] hover:bg-white/90 font-bold transition-all h-12">
+                  Subscribe
+                </Button>
               </div>
             </div>
           </div>
           
-          <div>
-            <h4 className="font-serif font-bold text-lg mb-6">Services</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="hover:text-primary transition-colors cursor-pointer">Premium Dry Cleaning</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Bespoke Tailoring</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Expert Alterations</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Steam Pressing</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Eco Washing</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-serif font-bold text-lg mb-6">Company</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="hover:text-primary transition-colors cursor-pointer">About Darzi</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Our Craftsmanship</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Sustainability</li>
-              <li className="hover:text-primary transition-colors cursor-pointer">Contact</li>
-            </ul>
-          </div>
-
-          <div>
-             <h4 className="font-serif font-bold text-lg mb-6">Experience Darzi</h4>
-             <p className="text-sm text-muted-foreground mb-4 italic">Join our newsletter for exclusive fabric care tips and first access to new collections.</p>
-             <div className="flex gap-2">
-               <input type="email" placeholder="Email" className="bg-background border border-primary/10 rounded-full px-4 py-2 text-xs flex-1 outline-none focus:border-primary/30" />
-               <Button size="sm" className="rounded-full">Join</Button>
-             </div>
-          </div>
-        </div>
-        <div className="container mx-auto mt-20 pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground uppercase tracking-widest">
-          <span>© 2026 Darzi Craftsmanship</span>
-          <div className="flex gap-8">
-            <span className="hover:text-primary cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">Accessibility</span>
+          <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 uppercase tracking-[0.2em] font-medium">
+            <div className="flex items-center gap-2">
+              <span>© 2026 Darzi Craftsmanship</span>
+              <span className="hidden md:inline text-white/10">•</span>
+              <span>All Rights Reserved</span>
+            </div>
+            <div className="flex gap-8">
+              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-white transition-colors">Cookies</a>
+            </div>
           </div>
         </div>
       </footer>
