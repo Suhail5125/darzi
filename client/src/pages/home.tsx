@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, Clock, ShieldCheck, ChevronDown, CheckCircle2, Ruler, Wind, Sparkles, PackageCheck, Truck, ShieldEllipsis } from "lucide-react";
+import { ArrowRight, Star, Clock, ShieldCheck, ChevronDown, CheckCircle2, Ruler, Wind, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 
 // Import generated assets
@@ -67,29 +67,9 @@ const processSteps = [
     icon: <Wind className="h-6 w-6" />,
   },
   {
-    title: "Finishing",
-    description: "Hand-finishing and signature steam pressing for perfection.",
+    title: "Perfect Return",
+    description: "Garments are hand-delivered, pristine and ready for wear.",
     icon: <Sparkles className="h-6 w-6" />,
-  },
-  {
-    title: "Quality Check",
-    description: "Final 12-point inspection by our head master craftsman.",
-    icon: <PackageCheck className="h-6 w-6" />,
-  },
-  {
-    title: "Packaging",
-    description: "Eco-friendly, breathable garment protection for safe return.",
-    icon: <ShieldEllipsis className="h-6 w-6" />,
-  },
-  {
-    title: "Delivery",
-    description: "Conscious logistics ensures your items arrive on time.",
-    icon: <Truck className="h-6 w-6" />,
-  },
-  {
-    title: "Pristine Return",
-    description: "Garments are hand-delivered, ready for your next event.",
-    icon: <CheckCircle2 className="h-6 w-6" />,
   },
 ];
 
@@ -261,60 +241,23 @@ export default function Home() {
 
       {/* Process of Work */}
       <section className="bg-primary text-white py-24 rounded-[3rem] mx-4 lg:mx-8">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">The Darzi Journey</h2>
             <p className="text-white/60 max-w-2xl mx-auto">A seamless experience from the moment your garment leaves your hand to its pristine return.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative">
             {processSteps.map((step, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative flex flex-col items-center space-y-6 group"
-              >
-                <div className="h-20 w-20 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+              <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-6">
+                <div className="h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
                   {step.icon}
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif font-bold mb-2 uppercase tracking-wider">{step.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed max-w-[200px] mx-auto">{step.description}</p>
+                  <h3 className="text-xl font-serif font-bold mb-2">{step.title}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
                 </div>
-                {/* Connector line for desktop */}
-                {i < processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-10 left-[calc(100%-20px)] w-[calc(100%-40px)] h-[1px] bg-gradient-to-r from-white/20 to-transparent" />
-                )}
-              </motion.div>
+              </div>
             ))}
-          </div>
-          
-          <div className="mt-20 pt-20 border-t border-white/10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 text-left">
-              <div className="space-y-4">
-                <div className="h-12 w-12 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground">
-                   <ShieldCheck className="h-6 w-6" />
-                </div>
-                <h4 className="text-xl font-serif font-bold">Secure Chain of Custody</h4>
-                <p className="text-white/40 text-sm leading-relaxed">Every garment is tagged with a unique RFID identifier, allowing real-time tracking from pickup to delivery through your digital dashboard.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="h-12 w-12 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground">
-                   <Wind className="h-6 w-6" />
-                </div>
-                <h4 className="text-xl font-serif font-bold">Atmospheric Restoration</h4>
-                <p className="text-white/40 text-sm leading-relaxed">Our 'Breathable Care' process uses ozone-enriched air to neutralize odors and allergens without the use of harsh industrial chemicals.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="h-12 w-12 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground">
-                   <CheckCircle2 className="h-6 w-6" />
-                </div>
-                <h4 className="text-xl font-serif font-bold">The 12-Point Mandate</h4>
-                <p className="text-white/40 text-sm leading-relaxed">No item leaves our facility without passing a rigorous 12-point inspection covering seams, buttons, texture, and structural integrity.</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
