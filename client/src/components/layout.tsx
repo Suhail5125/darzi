@@ -3,13 +3,15 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Menu, Scissors, Mail, Lock } from "lucide-react";
+import { Menu, Mail, Lock, Eye, EyeOff, User, ArrowLeft, CheckCircle2 } from "lucide-react";
 import logoImage from "@assets/generated_images/minimalist_logo_for_darzi_tailor_service.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isAuthOpen, setIsAuthOpen] = React.useState(false);
+  const [authMode, setAuthMode] = React.useState<'login' | 'signup'>('login');
+  const [showPassword, setShowPassword] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -19,9 +21,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoginOpen(false);
+    setIsAuthOpen(false);
     setLocation("/dashboard");
   };
 
@@ -56,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <NavLink href="/about">About</NavLink>
             <Button 
               variant="outline" 
-              onClick={() => setIsLoginOpen(true)}
+              onClick={() => { setAuthMode('login'); setIsAuthOpen(true); }}
               className="ml-4 font-medium rounded-full px-6 border-primary/20 hover:bg-primary/5 hover:text-primary"
             >
               Login
@@ -91,7 +93,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
                 <Button 
                   className="w-full rounded-full" 
-                  onClick={() => setIsLoginOpen(true)}
+                  onClick={() => { setAuthMode('login'); setIsAuthOpen(true); }}
                 >
                   Login
                 </Button>
@@ -101,63 +103,115 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* Login Modal Overlay */}
-      <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-3xl p-0 overflow-hidden border-none shadow-2xl">
-          <div className="bg-primary p-8 text-primary-foreground">
-            <DialogHeader>
-              <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                <Lock className="h-6 w-6 text-white" />
-              </div>
-              <DialogTitle className="text-3xl font-serif font-bold text-white">Welcome Back</DialogTitle>
-              <DialogDescription className="text-primary-foreground/70">
-                Enter your credentials to access your Darzi dashboard.
-              </DialogDescription>
-            </DialogHeader>
+      {/* Auth Modal Overlay */}
+      <Dialog open={isAuthOpen} onOpenChange={setIsAuthOpen}>
+        <DialogContent className="sm:max-w-[480px] rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
+          <div className="relative h-40 bg-primary flex items-center px-10 overflow-hidden">
+             {/* Decorative pattern */}
+             <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[length:32px_32px]" />
+             <div className="relative z-10 flex flex-col">
+                <DialogTitle className="text-4xl font-serif font-bold text-white">
+                  {authMode === 'login' ? 'Sign In' : 'Join Darzi'}
+                </DialogTitle>
+                <p className="text-white/60 text-sm mt-2 font-medium tracking-wide">
+                  {authMode === 'login' ? 'Access your curated wardrobe' : 'Experience the pinnacle of garment care'}
+                </p>
+             </div>
+             {authMode === 'signup' && (
+               <button 
+                 onClick={() => setAuthMode('login')}
+                 className="absolute top-10 right-10 text-white/40 hover:text-white transition-colors"
+               >
+                 <ArrowLeft className="h-6 w-6" />
+               </button>
+             )}
           </div>
-          <div className="p-8 bg-background">
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-4">
+
+          <div className="p-10 pt-8">
+            <form onSubmit={handleAuth} className="space-y-6">
+              <div className="space-y-5">
+                {authMode === 'signup' && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em] ml-1">Full Name</label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/20" />
+                      <input 
+                        type="text" 
+                        placeholder="Alexander Thorne"
+                        className="w-full h-14 pl-12 pr-4 rounded-2xl border border-primary/5 bg-primary/[0.02] focus:bg-white focus:border-primary/20 focus:ring-8 focus:ring-primary/5 outline-none transition-all text-sm font-medium"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
+                
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-primary/60 uppercase tracking-widest">Email Address</label>
+                  <label className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em] ml-1">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/20" />
                     <input 
                       type="email" 
-                      placeholder="alex@example.com"
-                      className="w-full h-12 pl-12 pr-4 rounded-xl border border-primary/10 bg-muted/30 focus:border-primary/30 outline-none transition-all"
+                      placeholder="alex@darzi.com"
+                      className="w-full h-14 pl-12 pr-4 rounded-2xl border border-primary/5 bg-primary/[0.02] focus:bg-white focus:border-primary/20 focus:ring-8 focus:ring-primary/5 outline-none transition-all text-sm font-medium"
                       required
                     />
                   </div>
                 </div>
+
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-primary/60 uppercase tracking-widest">Password</label>
+                  <label className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em] ml-1">Password</label>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/20" />
                     <input 
-                      type="password" 
+                      type={showPassword ? "text" : "password"} 
                       placeholder="••••••••"
-                      className="w-full h-12 pl-12 pr-4 rounded-xl border border-primary/10 bg-muted/30 focus:border-primary/30 outline-none transition-all"
+                      className="w-full h-14 pl-12 pr-14 rounded-2xl border border-primary/5 bg-primary/[0.02] focus:bg-white focus:border-primary/20 focus:ring-8 focus:ring-primary/5 outline-none transition-all text-sm font-medium"
                       required
                     />
+                    <button 
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-5 top-1/2 -translate-y-1/2 text-primary/20 hover:text-primary transition-colors p-1"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-4 h-4 rounded border-primary/10 text-primary focus:ring-primary/20 transition-all cursor-pointer" />
-                  <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">Remember me</span>
-                </label>
-                <a href="#" className="text-sm font-bold text-primary hover:underline underline-offset-4">Forgot Password?</a>
-              </div>
+              {authMode === 'login' ? (
+                <div className="flex items-center justify-between px-1">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center">
+                      <input type="checkbox" className="peer appearance-none w-5 h-5 rounded-lg border border-primary/10 checked:bg-primary checked:border-primary transition-all cursor-pointer" />
+                      <CheckCircle2 className="absolute h-3 w-3 text-white left-1 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                    </div>
+                    <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors">Remember me</span>
+                  </label>
+                  <button type="button" className="text-xs font-bold text-primary hover:text-primary/70 transition-colors underline underline-offset-4 decoration-primary/20">Forgot Password?</button>
+                </div>
+              ) : (
+                <div className="px-1 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5">
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-[11px] font-medium text-muted-foreground leading-relaxed">I agree to the <button type="button" className="font-bold text-primary hover:underline">Terms of Service</button> and <button type="button" className="font-bold text-primary hover:underline">Privacy Policy</button></span>
+                  </div>
+                </div>
+              )}
 
-              <Button type="submit" className="w-full h-12 rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-                Sign In
+              <Button type="submit" className="w-full h-14 rounded-2xl shadow-2xl shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-bold bg-primary hover:scale-[1.02] active:scale-[0.98]">
+                {authMode === 'login' ? 'Sign In to Dashboard' : 'Complete Registration'}
               </Button>
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground">
-                  Don't have an account? <a href="#" className="text-primary font-bold hover:underline">Register</a>
+              
+              <div className="text-center pt-4">
+                <p className="text-sm font-medium text-muted-foreground">
+                  {authMode === 'login' ? (
+                    <>New to the circle? <button type="button" onClick={() => setAuthMode('signup')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Join Now</button></>
+                  ) : (
+                    <>Already a member? <button type="button" onClick={() => setAuthMode('login')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Sign In</button></>
+                  )}
                 </p>
               </div>
             </form>
