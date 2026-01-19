@@ -240,24 +240,76 @@ export default function Home() {
       </section>
 
       {/* Process of Work */}
-      <section className="bg-primary text-white py-24 rounded-[3rem] mx-4 lg:mx-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">The Darzi Journey</h2>
-            <p className="text-white/60 max-w-2xl mx-auto">A seamless experience from the moment your garment leaves your hand to its pristine return.</p>
+      <section className="bg-primary text-white py-32 rounded-[3.5rem] mx-4 lg:mx-8 relative overflow-hidden">
+        {/* Subtle decorative background elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-10">
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-white rounded-full blur-[120px]" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-white rounded-full blur-[120px]" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+            <div className="max-w-xl">
+              <span className="text-white/40 uppercase tracking-[0.3em] text-xs font-bold mb-4 block">The Methodology</span>
+              <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight">The Darzi Journey</h2>
+            </div>
+            <p className="text-white/50 max-w-sm text-lg leading-relaxed border-l border-white/10 pl-8">
+              A seamless, multi-stage experience designed for the discerning individual.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
             {processSteps.map((step, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-6">
-                <div className="h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                  {step.icon}
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group relative p-8 rounded-3xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all duration-500 h-full"
+              >
+                <div className="absolute top-6 right-8 text-white/10 text-6xl font-serif font-bold group-hover:text-white/20 transition-colors">
+                  0{i + 1}
                 </div>
-                <div>
-                  <h3 className="text-xl font-serif font-bold mb-2">{step.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
+                
+                <div className="h-14 w-14 rounded-2xl bg-white/10 flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500">
+                  <div className="text-white group-hover:text-white transition-colors">
+                    {step.icon}
+                  </div>
                 </div>
-              </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-serif font-bold">{step.title}</h3>
+                  <p className="text-white/40 text-sm leading-relaxed group-hover:text-white/60 transition-colors">
+                    {step.description}
+                  </p>
+                </div>
+
+                {/* Connecting line for desktop */}
+                {i < processSteps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-2 w-4 h-[1px] bg-white/10 z-0" />
+                )}
+              </motion.div>
             ))}
+          </div>
+
+          <div className="mt-20 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-6">
+              <div className="flex -space-x-3">
+                {[1, 2, 3].map((_, i) => (
+                  <div key={i} className="h-10 w-10 rounded-full border-2 border-primary bg-secondary/20 overflow-hidden">
+                    <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" />
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-white/40 font-medium">Trusted by 2,000+ professionals</p>
+            </div>
+            <Link href="/booking">
+              <Button variant="outline" className="rounded-full border-white/20 hover:bg-white hover:text-primary transition-all px-8 py-6 text-lg group bg-transparent">
+                Start Your Journey
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
