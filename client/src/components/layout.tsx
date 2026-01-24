@@ -295,9 +295,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-primary-foreground/40 uppercase tracking-widest font-bold">
             <span>© 2026 Darzi Craftsmanship</span>
             <div className="flex gap-8">
-              <a href="#" className="hover:text-white">Privacy</a>
-              <a href="#" className="hover:text-white">Terms</a>
-              <a href="#" className="hover:text-white">Contact</a>
+              <Link href="/privacy"><a className="hover:text-white transition-colors">Privacy</a></Link>
+              <Link href="/terms"><a className="hover:text-white transition-colors">Terms</a></Link>
+              <Link href="/contact"><a className="hover:text-white transition-colors">Contact</a></Link>
+              <Link href="/faq"><a className="hover:text-white transition-colors">FAQ</a></Link>
             </div>
           </div>
         </div>
