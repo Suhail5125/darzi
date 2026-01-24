@@ -105,8 +105,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Auth Modal Overlay */}
       <Dialog open={isAuthOpen} onOpenChange={setIsAuthOpen}>
-        <DialogContent className="sm:max-w-[480px] rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
-          <div className="relative h-40 bg-primary flex items-center px-10 overflow-hidden">
+        <DialogContent className="sm:max-w-[480px] w-[95vw] min-h-[600px] flex flex-col rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
+          <div className="relative h-40 shrink-0 bg-primary flex items-center px-10 overflow-hidden">
              {/* Decorative pattern */}
              <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[length:32px_32px]" />
              <div className="relative z-10 flex flex-col">
@@ -127,9 +127,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
              )}
           </div>
 
-          <div className="p-10 pt-8">
-            <form onSubmit={handleAuth} className="space-y-6">
-              <div className="space-y-5">
+          <div className="p-10 pt-8 flex-1 flex flex-col">
+            <form onSubmit={handleAuth} className="flex-1 flex flex-col space-y-6">
+              <div className="space-y-5 flex-1">
                 {authMode === 'signup' && (
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em] ml-1">Full Name</label>
@@ -179,40 +179,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
 
-              {authMode === 'login' ? (
-                <div className="flex items-center justify-between px-1">
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input type="checkbox" className="peer appearance-none w-5 h-5 rounded-lg border border-primary/10 checked:bg-primary checked:border-primary transition-all cursor-pointer" />
-                      <CheckCircle2 className="absolute h-3 w-3 text-white left-1 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
-                    </div>
-                    <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors">Remember me</span>
-                  </label>
-                  <button type="button" className="text-xs font-bold text-primary hover:text-primary/70 transition-colors underline underline-offset-4 decoration-primary/20">Forgot Password?</button>
-                </div>
-              ) : (
-                <div className="px-1 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                    </div>
-                    <span className="text-[11px] font-medium text-muted-foreground leading-relaxed">I agree to the <button type="button" className="font-bold text-primary hover:underline">Terms of Service</button> and <button type="button" className="font-bold text-primary hover:underline">Privacy Policy</button></span>
+              <div className="shrink-0 space-y-6">
+                {authMode === 'login' ? (
+                  <div className="flex items-center justify-between px-1">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <div className="relative flex items-center">
+                        <input type="checkbox" className="peer appearance-none w-5 h-5 rounded-lg border border-primary/10 checked:bg-primary checked:border-primary transition-all cursor-pointer" />
+                        <CheckCircle2 className="absolute h-3 w-3 text-white left-1 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                      </div>
+                      <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors">Remember me</span>
+                    </label>
+                    <button type="button" className="text-xs font-bold text-primary hover:text-primary/70 transition-colors underline underline-offset-4 decoration-primary/20">Forgot Password?</button>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="px-1 space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5">
+                        <CheckCircle2 className="h-4 w-4 text-primary" />
+                      </div>
+                      <span className="text-[11px] font-medium text-muted-foreground leading-relaxed">I agree to the <button type="button" className="font-bold text-primary hover:underline">Terms of Service</button> and <button type="button" className="font-bold text-primary hover:underline">Privacy Policy</button></span>
+                    </div>
+                  </div>
+                )}
 
-              <Button type="submit" className="w-full h-14 rounded-2xl shadow-2xl shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-bold bg-primary hover:scale-[1.02] active:scale-[0.98]">
-                {authMode === 'login' ? 'Sign In to Dashboard' : 'Complete Registration'}
-              </Button>
-              
-              <div className="text-center pt-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  {authMode === 'login' ? (
-                    <>New to the circle? <button type="button" onClick={() => setAuthMode('signup')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Join Now</button></>
-                  ) : (
-                    <>Already a member? <button type="button" onClick={() => setAuthMode('login')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Sign In</button></>
-                  )}
-                </p>
+                <Button type="submit" className="w-full h-14 rounded-2xl shadow-2xl shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-bold bg-primary hover:scale-[1.02] active:scale-[0.98]">
+                  {authMode === 'login' ? 'Sign In to Dashboard' : 'Complete Registration'}
+                </Button>
+                
+                <div className="text-center">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {authMode === 'login' ? (
+                      <>New to the circle? <button type="button" onClick={() => setAuthMode('signup')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Join Now</button></>
+                    ) : (
+                      <>Already a member? <button type="button" onClick={() => setAuthMode('login')} className="text-primary font-bold hover:text-primary/70 transition-colors underline underline-offset-8 decoration-primary/20">Sign In</button></>
+                    )}
+                  </p>
+                </div>
               </div>
             </form>
           </div>

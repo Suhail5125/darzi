@@ -10,6 +10,7 @@ import starchImg from "@assets/generated_images/starch_service_crisp_linens.png"
 import alterationImg from "@assets/generated_images/clothing_alteration_service.png";
 import tailoringImg from "@assets/generated_images/bespoke_tailoring_service.png";
 import washingImg from "@assets/generated_images/professional_laundry_washing_service.png";
+import whyChooseImg from "../assets/images/why-choose.jpg";
 
 const categories = [
   {
@@ -203,7 +204,7 @@ export default function Home() {
           <div className="relative">
             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1594932224828-b4b059b6ffc0?auto=format&fit=crop&q=80" 
+                src={whyChooseImg} 
                 alt="Master Craftsman" 
                 className="w-full h-full object-cover"
               />
