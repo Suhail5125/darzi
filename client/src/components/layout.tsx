@@ -105,7 +105,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Auth Modal Overlay */}
       <Dialog open={isAuthOpen} onOpenChange={setIsAuthOpen}>
-        <DialogContent className="sm:max-w-[480px] w-[95vw] h-[720px] flex flex-col rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
+        <DialogContent className="sm:max-w-[480px] w-[95vw] min-h-[600px] flex flex-col rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
           <div className="relative h-40 shrink-0 bg-primary flex items-center px-10 overflow-hidden">
              {/* Decorative pattern */}
              <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[length:32px_32px]" />
@@ -127,9 +127,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
              )}
           </div>
 
-          <div className="p-10 pt-8 flex-1 flex flex-col overflow-hidden">
-            <form onSubmit={handleAuth} className="flex-1 flex flex-col">
-              <div className="flex-1 space-y-5 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="p-10 pt-8 flex-1 flex flex-col">
+            <form onSubmit={handleAuth} className="flex-1 flex flex-col space-y-6">
+              <div className="space-y-5 flex-1">
                 {authMode === 'signup' && (
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em] ml-1">Full Name</label>
@@ -177,9 +177,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                   </div>
                 </div>
+              </div>
 
+              <div className="shrink-0 space-y-6">
                 {authMode === 'login' ? (
-                  <div className="flex items-center justify-between px-1 py-2">
+                  <div className="flex items-center justify-between px-1">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <div className="relative flex items-center">
                         <input type="checkbox" className="peer appearance-none w-5 h-5 rounded-lg border border-primary/10 checked:bg-primary checked:border-primary transition-all cursor-pointer" />
@@ -190,7 +192,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <button type="button" className="text-xs font-bold text-primary hover:text-primary/70 transition-colors underline underline-offset-4 decoration-primary/20">Forgot Password?</button>
                   </div>
                 ) : (
-                  <div className="px-1 space-y-3 py-2">
+                  <div className="px-1 space-y-3">
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5">
                         <CheckCircle2 className="h-4 w-4 text-primary" />
@@ -199,9 +201,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </div>
                   </div>
                 )}
-              </div>
 
-              <div className="shrink-0 pt-6 space-y-6 bg-white">
                 <Button type="submit" className="w-full h-14 rounded-2xl shadow-2xl shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-bold bg-primary hover:scale-[1.02] active:scale-[0.98]">
                   {authMode === 'login' ? 'Sign In to Dashboard' : 'Complete Registration'}
                 </Button>
