@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "paths": {
+      "@darzi/shared-ui": ["../../packages/shared-ui/src"],
+      "@darzi/shared-ui/*": ["../../packages/shared-ui/src/*"],
+      "@darzi/shared-utils": ["../../packages/shared-utils/src"],
+      "@darzi/shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@darzi/shared-assets": ["../../packages/shared-assets/src"],
+      "@darzi/shared-assets/*": ["../../packages/shared-assets/src/*"]
+    }
+  },
+  "include": ["src/**/*", "App.tsx", "index.ts", "nativewind-env.d.ts"],
+  "exclude": ["node_modules"]
+}

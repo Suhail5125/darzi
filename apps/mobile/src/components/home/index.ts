@@ -1,0 +1,25 @@
+export { HeroSection } from './HeroSection';
+export { CouponCarousel } from './CouponCarousel';
+export { ServiceGrid } from './ServiceGrid';
+export { TestimonialCarousel } from './TestimonialCarousel';
+export { ProcessSteps } from './ProcessSteps';
+export { TrustIndicators } from './TrustIndicators';
+export { QuickActions } from './QuickActions';
+export { RecentOrders } from './RecentOrders';
+export { LoyaltyWidget } from './LoyaltyWidget';
+export { PersonalizedRecommendations } from './PersonalizedRecommendations';
+export { ExpressServiceCTA } from './ExpressServiceCTA';
+export { CareTipsCarousel } from './CareTipsCarousel';
+export { YouMightAlsoLike } from './YouMightAlsoLike';
+
+export type { Service } from './ServiceGrid';
+export type { Coupon } from './CouponCarousel';
+export type { Testimonial } from './TestimonialCarousel';
+export type { ProcessStep } from './ProcessSteps';
+export type { TrustIndicator } from './TrustIndicators';
+export type { QuickAction } from './QuickActions';
+export type { RecentOrder } from './RecentOrders';
+export type { LoyaltyData } from './LoyaltyWidget';
+export type { Recommendation } from './PersonalizedRecommendations';
+export type { CareTip } from './CareTipsCarousel';
+export type { SuggestedItem } from './YouMightAlsoLike';

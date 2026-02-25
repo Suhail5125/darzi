@@ -1,0 +1,24 @@
+{
+  "name": "@darzi/shared-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./mobile": "./src/mobile.ts",
+    "./*": "./src/*"
+  },
+  "dependencies": {
+    "@darzi/shared-utils": "*"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    }
+  }
+}

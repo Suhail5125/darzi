@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DARZI THEME - 2026 Modern Luxury */
+:root {
+  /* Clean White Background */
+  --background: 210 20% 98%;
+  --foreground: 220 40% 10%;
+
+  /* Premium Navy Blue as Primary */
+  --primary: 222 47% 31%;
+  --primary-foreground: 210 40% 98%;
+
+  /* Soft Lavender/Blue for Secondary */
+  --secondary: 215 25% 90%;
+  --secondary-foreground: 222 47% 31%;
+
+  /* Crisp White Cards with subtle depth */
+  --card: 0 0% 100%;
+  --card-foreground: 220 40% 10%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 40% 10%;
+
+  --muted: 210 20% 96%;
+  --muted-foreground: 215 20% 45%;
+
+  --accent: 38 45% 90%; /* Subtle Gold/Cream Accent */
+  --accent-foreground: 222 47% 31%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 215 20% 90%;
+  --input: 215 20% 90%;
+  --ring: 222 47% 31%;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+
+  --card: 222 47% 13%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222 47% 13%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 215 25% 90%;
+  --primary-foreground: 222 47% 31%;
+
+  --secondary: 222 47% 20%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 222 47% 15%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 222 47% 20%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 222 47% 20%;
+  --input: 222 47% 20%;
+  --ring: 215 25% 90%;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Custom scrollbar for cart - visible and styled */
+  .cart-scrollable::-webkit-scrollbar {
+    display: block;
+    width: 6px;
+  }
+
+  .cart-scrollable::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+    border-radius: 10px;
+  }
+
+  .cart-scrollable::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 10px;
+  }
+
+  .cart-scrollable::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+
+  .cart-scrollable {
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: hsl(var(--primary) / 0.3) hsl(var(--secondary));  /* Firefox */
+  }
+}
+
+@layer utilities {
+  .page-padding-top {
+    padding-top: 5rem;
+  }
+  @media (min-width: 768px) {
+    .page-padding-top {
+      padding-top: 6rem;
+    }
+  }
+}

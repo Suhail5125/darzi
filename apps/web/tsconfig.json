@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@darzi/shared-ui": ["../../packages/shared-ui/src"],
+      "@darzi/shared-utils": ["../../packages/shared-utils/src"],
+      "@darzi/shared-assets": ["../../packages/shared-assets/src"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
