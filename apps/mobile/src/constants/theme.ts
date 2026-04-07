@@ -11,6 +11,7 @@ export const colors = {
   foreground: '#1A202C',     // hsl(220, 40%, 10%)
   card: '#FFFFFF',           // hsl(0, 0%, 100%) - Crisp White Cards
   cardForeground: '#1A202C',
+  surface: '#FFFFFF',        // Same as card - for surface elements
   muted: '#F0F4F8',          // hsl(210, 20%, 96%)
   mutedForeground: '#64748B', // hsl(215, 20%, 45%)
   border: '#D9E2EC',         // hsl(215, 20%, 90%)

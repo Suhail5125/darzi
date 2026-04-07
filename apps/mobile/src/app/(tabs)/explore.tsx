@@ -1,237 +1,354 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { ServiceCard, CategoryFilters } from '../../components/explore';
-import { Header, LocationSelector, SearchResults } from '../../components/navigation';
-import { useAuth } from '../../contexts/AuthContext';
-import { useLocation, useSearch } from '../../hooks';
-import { ExploreScreenSkeleton, ErrorMessage } from '../../components/shared';
-import { colors, spacing, typography } from '../../constants/theme';
-import { Service, ServiceCategory } from '../../types';
+import { SafeAreaView } from '../../components/shared';
+import { colors, spacing, typography, borderRadius } from '../../constants/theme';
+import { useCart } from '../../contexts/CartContext';
+import { useToast } from '../../contexts/ToastContext';
 
-// Mock data - in a real app, this would come from an API
-const MOCK_SERVICES: Service[] = [
+// Service categories with pricing
+const SERVICES = [
   {
-    id: '1',
-    title: 'Premium Dry Cleaning',
-    category: 'Cleaning',
-    description: 'Professional dry cleaning for delicate garments using eco-friendly solvents',
-    features: ['Eco-friendly process', 'Stain removal', 'Same-day service'],
-    price: 15,
-    image: 'https://via.placeholder.com/300x200',
+    id: 'pressing',
+    name: 'Pressing',
+    icon: 'shirt-outline',
+    color: '#4A90E2',
+    items: [
+      { id: 'pressing-shirt', name: 'Shirt', price: 10 },
+      { id: 'pressing-pant', name: 'Pant', price: 10 },
+      { id: 'pressing-kurta', name: 'Kurta', price: 30 },
+      { id: 'pressing-saree', name: 'Saree', price: 50 },
+      { id: 'pressing-suit', name: 'Suit (2 Piece)', price: 80 },
+      { id: 'pressing-blazer', name: 'Blazer', price: 40 },
+      { id: 'pressing-dress', name: 'Dress', price: 35 },
+      { id: 'pressing-tshirt', name: 'T-Shirt', price: 8 },
+    ],
   },
   {
-    id: '2',
-    title: 'Expert Alterations',
-    category: 'Tailoring',
-    description: 'Expert tailoring and alterations for the perfect fit',
-    features: ['Custom fitting', 'Quick turnaround', 'Master tailors'],
-    price: 25,
-    image: 'https://via.placeholder.com/300x200',
+    id: 'dry-cleaning',
+    name: 'Dry Cleaning',
+    icon: 'water-outline',
+    color: '#50C878',
+    items: [
+      { id: 'dc-shirt', name: 'Shirt', price: 40 },
+      { id: 'dc-pant', name: 'Pant', price: 50 },
+      { id: 'dc-kurta', name: 'Kurta', price: 80 },
+      { id: 'dc-saree', name: 'Saree', price: 150 },
+      { id: 'dc-suit', name: 'Suit (2 Piece)', price: 250 },
+      { id: 'dc-blazer', name: 'Blazer', price: 120 },
+      { id: 'dc-dress', name: 'Dress', price: 100 },
+      { id: 'dc-coat', name: 'Coat', price: 180 },
+      { id: 'dc-sherwani', name: 'Sherwani', price: 200 },
+    ],
   },
   {
-    id: '3',
-    title: 'Professional Pressing',
-    category: 'Finishing',
-    description: 'Professional pressing and finishing for crisp, wrinkle-free garments',
-    features: ['Steam pressing', 'Crease removal', 'Fabric care'],
-    price: 8,
-    image: 'https://via.placeholder.com/300x200',
+    id: 'washing',
+    name: 'Washing',
+    icon: 'water',
+    color: '#9B59B6',
+    items: [
+      { id: 'wash-shirt', name: 'Shirt', price: 25 },
+      { id: 'wash-pant', name: 'Pant', price: 30 },
+      { id: 'wash-kurta', name: 'Kurta', price: 40 },
+      { id: 'wash-tshirt', name: 'T-Shirt', price: 20 },
+      { id: 'wash-jeans', name: 'Jeans', price: 35 },
+      { id: 'wash-bedsheet', name: 'Bedsheet', price: 60 },
+      { id: 'wash-towel', name: 'Towel', price: 15 },
+    ],
   },
   {
-    id: '4',
-    title: 'Garment Repairs',
-    category: 'Tailoring',
-    description: 'Expert repairs and restoration for damaged garments',
-    features: ['Zipper replacement', 'Button repair', 'Hem fixes'],
-    price: 20,
-    image: 'https://via.placeholder.com/300x200',
+    id: 'alteration',
+    name: 'Alteration',
+    icon: 'cut-outline',
+    color: '#E74C3C',
+    items: [
+      { id: 'alt-shirt', name: 'Shirt Fitting', price: 80 },
+      { id: 'alt-pant', name: 'Pant Fitting', price: 100 },
+      { id: 'alt-kurta', name: 'Kurta Fitting', price: 120 },
+      { id: 'alt-dress', name: 'Dress Fitting', price: 150 },
+      { id: 'alt-zipper', name: 'Zipper Replacement', price: 60 },
+      { id: 'alt-button', name: 'Button Replacement', price: 30 },
+      { id: 'alt-hem', name: 'Hemming', price: 50 },
+    ],
   },
   {
-    id: '5',
-    title: 'Laundry Service',
-    category: 'Cleaning',
-    description: 'Complete wash and fold service for everyday garments',
-    features: ['Wash & fold', 'Fabric softener', 'Fast delivery'],
-    price: 12,
-    image: 'https://via.placeholder.com/300x200',
-  },
-  {
-    id: '6',
-    title: 'Shoe Shine',
-    category: 'Finishing',
-    description: 'Professional shoe cleaning and polishing service',
-    features: ['Deep cleaning', 'Polish & shine', 'Leather care'],
-    price: 10,
-    image: 'https://via.placeholder.com/300x200',
+    id: 'starch',
+    name: 'Starch',
+    icon: 'sparkles-outline',
+    color: '#F39C12',
+    items: [
+      { id: 'starch-shirt', name: 'Shirt', price: 15 },
+      { id: 'starch-kurta', name: 'Kurta', price: 25 },
+      { id: 'starch-saree', name: 'Saree', price: 40 },
+    ],
   },
 ];
 
-const CATEGORIES: Array<'All' | ServiceCategory> = ['All', 'Cleaning', 'Finishing', 'Tailoring'];
-
 export default function ExploreScreen() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState<'All' | ServiceCategory>('All');
-  const [showLocationSelector, setShowLocationSelector] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // Location management
-  const { currentLocation, availableLocations, setLocation } = useLocation();
-  
-  // Search functionality
-  const { query, setQuery, results, isSearching, hasResults } = useSearch(
-    MOCK_SERVICES.map(service => ({
-      ...service,
-      keywords: [...service.features, service.category],
-    })),
-    {
-      searchFields: ['title', 'description', 'category', 'keywords'],
-      minQueryLength: 2,
-    }
-  );
+  const cart = useCart();
+  const { showToast } = useToast();
+  const [selectedService, setSelectedService] = useState(SERVICES[0].id);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    loadServices();
-  }, []);
+  const currentService = SERVICES.find(s => s.id === selectedService) || SERVICES[0];
 
-  const loadServices = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      // Simulate API call to fetch services
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // In a real app, fetch services from API here
-    } catch (err) {
-      setError('Failed to load services. Please try again.');
-      console.error('Failed to load services:', err);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleQuantityChange = (itemId: string, delta: number) => {
+    const currentQty = quantities[itemId] || 0;
+    const newQty = Math.max(0, currentQty + delta);
+    
+    setQuantities(prev => ({
+      ...prev,
+      [itemId]: newQty,
+    }));
   };
 
-  // Filter services based on selected category
-  const filteredServices = useMemo(() => {
-    if (selectedCategory === 'All') {
-      return MOCK_SERVICES;
-    }
-    return MOCK_SERVICES.filter(service => service.category === selectedCategory);
-  }, [selectedCategory]);
-
-  const handleServicePress = (serviceId: string) => {
-    router.push({
-      pathname: '/booking',
-      params: { serviceId },
+  const handleAddToCart = () => {
+    let itemsAdded = 0;
+    
+    Object.entries(quantities).forEach(([itemId, quantity]) => {
+      if (quantity > 0) {
+        const service = SERVICES.find(s => s.items.some(i => i.id === itemId));
+        const item = service?.items.find(i => i.id === itemId);
+        
+        if (service && item) {
+          cart.addItem({
+            serviceId: itemId,
+            serviceName: `${service.name} - ${item.name}`,
+            description: `${service.name} service for ${item.name}`,
+            price: item.price,
+            quantity: quantity,
+          });
+          itemsAdded++;
+        }
+      }
     });
-  };
 
-  const handleLocationPress = () => {
-    setShowLocationSelector(true);
-  };
-
-  const handleLocationSelect = async (location: typeof currentLocation) => {
-    if (location) {
-      await setLocation(location);
+    if (itemsAdded > 0) {
+      showToast(`${itemsAdded} item(s) added to cart`, 'success');
+      setQuantities({});
+    } else {
+      showToast('Please select at least one item', 'info');
     }
   };
 
-  // Show search results when user is searching
-  const showSearchResults = isAuthenticated && query.length >= 2;
+  const getTotalItems = () => {
+    return Object.values(quantities).reduce((sum, qty) => sum + qty, 0);
+  };
 
-  const renderServiceCard = ({ item, index }: { item: Service; index: number }) => (
-    <View style={[styles.cardWrapper, index % 2 === 0 ? styles.cardLeft : styles.cardRight]}>
-      <ServiceCard service={item} onPress={() => handleServicePress(item.id)} />
-    </View>
-  );
-
-  const renderEmptyState = () => (
-    <View style={styles.emptyState}>
-      <Text style={styles.emptyStateIcon}>🔍</Text>
-      <Text style={styles.emptyStateTitle}>No Services Found</Text>
-      <Text style={styles.emptyStateText}>
-        We couldn't find any services matching your filter. Try selecting a different category.
-      </Text>
-    </View>
-  );
-
-  const renderFooter = () => (
-    <View style={styles.ctaSection}>
-      <Text style={styles.ctaTitle}>Ready to Get Started?</Text>
-      <Text style={styles.ctaText}>
-        Book any of our premium services and experience the difference of professional garment care.
-      </Text>
-    </View>
-  );
+  const getTotalPrice = () => {
+    return Object.entries(quantities).reduce((sum, [itemId, quantity]) => {
+      const service = SERVICES.find(s => s.items.some(i => i.id === itemId));
+      const item = service?.items.find(i => i.id === itemId);
+      return sum + (item?.price || 0) * quantity;
+    }, 0);
+  };
 
   return (
     <View style={styles.container}>
-      {/* Header with search and location */}
-      {isAuthenticated && (
-        <Header
-          showSearch
-          showLocation
-          location={currentLocation?.displayName}
-          onLocationPress={handleLocationPress}
-          onSearchChange={setQuery}
-          searchPlaceholder="Search services..."
-        />
-      )}
-
-      {/* Loading State */}
-      {isLoading && <ExploreScreenSkeleton />}
-
-      {/* Error State */}
-      {!isLoading && error && (
-        <ErrorMessage
-          message={error}
-          onRetry={loadServices}
-        />
-      )}
-
-      {/* Content */}
-      {!isLoading && !error && (
-        <>
-          {/* Show search results when searching */}
-          {showSearchResults ? (
-            <SearchResults
-              results={results}
-              isSearching={isSearching}
-              hasQuery={query.length >= 2}
-              onResultPress={(item) => handleServicePress(item.id)}
-              emptyMessage="No services found"
-            />
-          ) : (
-            <>
-              <CategoryFilters
-                categories={CATEGORIES}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-              />
-
-              <FlatList
-                data={filteredServices}
-                renderItem={renderServiceCard}
-                keyExtractor={(item) => item.id}
-                numColumns={2}
-                contentContainerStyle={styles.listContent}
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={renderEmptyState}
-                ListFooterComponent={filteredServices.length > 0 ? renderFooter : null}
-              />
-            </>
-          )}
-        </>
-      )}
-
-      {/* Location Selector Modal */}
-      <LocationSelector
-        visible={showLocationSelector}
-        currentLocation={currentLocation}
-        availableLocations={availableLocations}
-        onSelectLocation={handleLocationSelect}
-        onClose={() => setShowLocationSelector(false)}
+      {/* Gradient Background */}
+      <LinearGradient
+        colors={['#4A6FA5', '#98C1D9', '#FFFFFF']}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
       />
+      
+      <SafeAreaView edges={['left', 'right']} style={styles.safeArea}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <View style={styles.headerBackground} />
+          
+          <View style={styles.headerContent}>
+            {/* Left - Empty */}
+            <View style={styles.headerLeft} />
+
+            {/* Center - Title */}
+            {Platform.OS === 'ios' ? (
+              <BlurView intensity={80} tint="light" style={styles.titleContainer}>
+                <Text style={styles.headerTitle}>Our Services</Text>
+              </BlurView>
+            ) : (
+              <View style={styles.titleContainer}>
+                <Text style={styles.headerTitle}>Our Services</Text>
+              </View>
+            )}
+
+            {/* Right - Cart Icon */}
+            <View style={styles.headerRight}>
+              {Platform.OS === 'ios' ? (
+                <BlurView intensity={80} tint="light" style={styles.iconButton}>
+                  <TouchableOpacity
+                    onPress={() => router.push('/(tabs)/cart')}
+                    style={styles.iconTouchable}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="cart-outline" size={24} color={colors.primary} />
+                    {cart.itemCount > 0 && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{cart.itemCount}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </BlurView>
+              ) : (
+                <View style={styles.iconButton}>
+                  <TouchableOpacity
+                    onPress={() => router.push('/(tabs)/cart')}
+                    style={styles.iconTouchable}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="cart-outline" size={24} color={colors.primary} />
+                    {cart.itemCount > 0 && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{cart.itemCount}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+        
+        {/* Header Spacer */}
+        <View style={styles.headerSpacer} />
+
+        {/* Service Category Tabs */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.tabsContainer}
+          contentContainerStyle={styles.tabsContent}
+        >
+          {SERVICES.map((service) => (
+            <TouchableOpacity
+              key={service.id}
+              style={[
+                styles.tab,
+                selectedService === service.id && styles.tabActive,
+              ]}
+              onPress={() => setSelectedService(service.id)}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name={service.icon as any}
+                size={20}
+                color={selectedService === service.id ? '#FFFFFF' : service.color}
+              />
+              <Text
+                style={[
+                  styles.tabText,
+                  selectedService === service.id && styles.tabTextActive,
+                ]}
+              >
+                {service.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Pricing List */}
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.priceListContainer}>
+            {currentService.items.map((item, index) => (
+              <View
+                key={item.id}
+                style={[
+                  styles.priceItem,
+                  index === currentService.items.length - 1 && styles.priceItemLast,
+                ]}
+              >
+                <View style={styles.priceItemLeft}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                  <Text style={styles.itemPrice}>₹{item.price}</Text>
+                </View>
+                
+                <View style={styles.quantityControl}>
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleQuantityChange(item.id, -1)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="remove" size={20} color={colors.primary} />
+                  </TouchableOpacity>
+                  
+                  <Text style={styles.quantityText}>
+                    {quantities[item.id] || 0}
+                  </Text>
+                  
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleQuantityChange(item.id, 1)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="add" size={20} color={colors.primary} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {/* Info Section */}
+          <View style={styles.infoSection}>
+            <View style={styles.infoCard}>
+              <Ionicons name="time-outline" size={24} color={colors.primary} />
+              <Text style={styles.infoTitle}>Quick Turnaround</Text>
+              <Text style={styles.infoText}>
+                Most services completed within 24-48 hours
+              </Text>
+            </View>
+            
+            <View style={styles.infoCard}>
+              <Ionicons name="shield-checkmark-outline" size={24} color={colors.primary} />
+              <Text style={styles.infoTitle}>Quality Guaranteed</Text>
+              <Text style={styles.infoText}>
+                100% satisfaction or your money back
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.bottomPadding} />
+        </ScrollView>
+
+        {/* Sticky Add to Cart Button */}
+        {getTotalItems() > 0 && (
+          <View style={styles.addToCartContainer}>
+            <TouchableOpacity
+              style={styles.addToCartButton}
+              onPress={handleAddToCart}
+              activeOpacity={0.8}
+            >
+              <LinearGradient
+                colors={['#4A6FA5', '#2E5A8F']}
+                style={styles.addToCartGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <View style={styles.addToCartContent}>
+                  <View style={styles.addToCartLeft}>
+                    <Text style={styles.addToCartItems}>
+                      {getTotalItems()} {getTotalItems() === 1 ? 'Item' : 'Items'}
+                    </Text>
+                    <Text style={styles.addToCartPrice}>₹{getTotalPrice()}</Text>
+                  </View>
+                  <View style={styles.addToCartRight}>
+                    <Text style={styles.addToCartText}>Add to Cart</Text>
+                    <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
+                  </View>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        )}
+      </SafeAreaView>
     </View>
   );
 }
@@ -239,66 +356,285 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
-  listContent: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xl,
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
-  cardWrapper: {
+  safeArea: {
     flex: 1,
-    maxWidth: '50%',
+    backgroundColor: 'transparent',
   },
-  cardLeft: {
-    paddingRight: spacing.xs,
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    paddingTop: Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0,
   },
-  cardRight: {
-    paddingLeft: spacing.xs,
+  headerBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(74, 111, 165, 1)',
   },
-  emptyState: {
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    gap: spacing.sm,
+  },
+  headerLeft: {
+    width: 44,
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: 'hidden',
+    backgroundColor: Platform.OS === 'ios' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.85)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Platform.OS === 'ios' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.9)',
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  iconTouchable: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    backgroundColor: '#E74C3C',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '700',
+  },
+  titleContainer: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: spacing['3xl'],
-    paddingHorizontal: spacing.xl,
+    backgroundColor: Platform.OS === 'ios' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.85)',
+    borderRadius: borderRadius.full,
+    paddingHorizontal: spacing.md,
+    height: 40,
+    borderWidth: 1,
+    borderColor: Platform.OS === 'ios' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.9)',
+    overflow: 'hidden',
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+    }),
   },
-  emptyStateIcon: {
-    fontSize: 64,
-    marginBottom: spacing.lg,
-  },
-  emptyStateTitle: {
-    fontSize: typography.fontSize.xl,
-    fontFamily: typography.fontFamily.bold,
-    color: colors.text.primary,
-    marginBottom: spacing.sm,
-    textAlign: 'center',
-  },
-  emptyStateText: {
+  headerTitle: {
     fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily.regular,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    lineHeight: typography.fontSize.base * typography.lineHeight.normal,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '600',
+    color: colors.foreground,
   },
-  ctaSection: {
-    marginTop: spacing.xl,
-    padding: spacing.lg,
-    backgroundColor: colors.surface,
-    borderRadius: 12,
+  headerRight: {
+    width: 44,
+    alignItems: 'flex-end',
+  },
+  headerSpacer: {
+    height: Platform.OS === 'ios' ? 100 : 80,
+  },
+  tabsContainer: {
+    maxHeight: 60,
+  },
+  tabsContent: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    gap: spacing.sm,
+  },
+  tab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(74, 111, 165, 0.2)',
+    marginRight: spacing.sm,
+  },
+  tabActive: {
+    backgroundColor: '#4A6FA5',
+    borderColor: '#4A6FA5',
+  },
+  tabText: {
+    fontSize: typography.fontSize.sm,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+  tabTextActive: {
+    color: '#FFFFFF',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingTop: spacing.md,
+    paddingHorizontal: spacing.md,
+  },
+  priceListContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  priceItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(74, 111, 165, 0.1)',
+  },
+  priceItemLast: {
+    borderBottomWidth: 0,
+  },
+  priceItemLeft: {
+    flex: 1,
+  },
+  itemName: {
+    fontSize: typography.fontSize.base,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: 2,
+  },
+  itemPrice: {
+    fontSize: typography.fontSize.sm,
+    fontFamily: typography.fontFamily.sans,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  quantityControl: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  quantityButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(74, 111, 165, 0.1)',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  ctaTitle: {
-    fontSize: typography.fontSize.xl,
-    fontFamily: typography.fontFamily.bold,
+  quantityText: {
+    fontSize: typography.fontSize.base,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '600',
     color: colors.text.primary,
-    marginBottom: spacing.sm,
+    minWidth: 30,
     textAlign: 'center',
   },
-  ctaText: {
-    fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily.regular,
+  infoSection: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  infoCard: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    alignItems: 'center',
+  },
+  infoTitle: {
+    fontSize: typography.fontSize.sm,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginTop: spacing.xs,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  infoText: {
+    fontSize: typography.fontSize.xs,
+    fontFamily: typography.fontFamily.sans,
     color: colors.text.secondary,
     textAlign: 'center',
-    lineHeight: typography.fontSize.base * typography.lineHeight.normal,
+    lineHeight: typography.fontSize.xs * 1.4,
+  },
+  bottomPadding: {
+    height: 100,
+  },
+  addToCartContainer: {
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(74, 111, 165, 0.1)',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  addToCartButton: {
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+  },
+  addToCartGradient: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  addToCartContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  addToCartLeft: {
+    flex: 1,
+  },
+  addToCartItems: {
+    fontSize: 10,
+    fontFamily: typography.fontFamily.sans,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginBottom: 2,
+  },
+  addToCartPrice: {
+    fontSize: typography.fontSize.lg,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  addToCartRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  addToCartText: {
+    fontSize: typography.fontSize.sm,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
 });

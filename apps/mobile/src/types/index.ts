@@ -39,7 +39,7 @@ export interface Toast {
   duration?: number;
 }
 
-export type ServiceCategory = 'Cleaning' | 'Finishing' | 'Tailoring';
+export type ServiceCategory = 'Cleaning' | 'Finishing' | 'Tailoring' | 'Pressing' | 'Dry Cleaning' | 'Laundry' | 'Starch' | 'Washing' | 'Alteration';
 
 export interface Service {
   id: string;
@@ -49,6 +49,12 @@ export interface Service {
   features: string[];
   price: number;
   image: string;
+}
+
+export interface ClothingItem {
+  id: string;
+  name: string;
+  price: number;
 }
 
 export type OrderStatus = 'In Progress' | 'Delivered' | 'Picked Up';
